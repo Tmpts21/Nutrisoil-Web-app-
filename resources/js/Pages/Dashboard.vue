@@ -23,10 +23,9 @@ import { Link } from '@inertiajs/inertia-vue3';
                         <div class="mb-12 text-center">
 
                             <br>
-                            <Link :href="route('PerformTesting')" class="bg-green-400 text-2xl hover:bg-green-500 text-green-800 font-bold py-2 px-4 rounded-full">
-                                <span>Start Soil Testing 
-                                    <i class="fa-solid fa-vials"></i>
-                                </span>
+
+                            <Link :href="route('PerformTesting')" class="shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+                               Start Soil Testing
                             </Link>
                             
                         </div>
