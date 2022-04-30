@@ -3,8 +3,8 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200">
-                        <div class="mb-12 text-center ">
+                    <div class="p-6 bg-white">
+                        <div class="text-center ">
 
 
                                 <div v-if="loading">
@@ -12,8 +12,7 @@
                                 </div>
                                 <div v-if="firstPage">
                                 <Transition>
-                                    
-                                    <div class="flex flex-col justify-center items-center border-b py-2">
+                                    <div class="flex flex-col justify-center items-center py-2">
                                           <form class="w-full max-w-sm">
                                             <div class="md:flex md:items-center mb-6">
                                                 <div class="md:w-1/3">
@@ -58,23 +57,27 @@
                                 </Transition>
                                 <Transition>
 
-                                <div v-if="test.start">
+                                <div v-if="test.start" class="mb-5">
                                      <button @click="nextSample()" class="mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
-                                            Save and continue to next sample 
+                                            <p v-if="this.test.currentCount == this.test.sampleCount">
+                                                Finish and continue
+                                            </p>
+                                            <p v-else> Save and Continue to next sample</p>
+
                                     </button>
                                 </div>
                                 </Transition>
 
                         
                                 <Transition>
-                                    <div v-if="test.sampleNutrients.length > 0 ">
+                                    <div v-if="showSampleDatas">
                                          <Samples :sampleDatas="test.sampleNutrients">   
                                         
                                         </Samples>
                                     </div>
                                 
                                 </Transition>
-                         
+
 
 
 
@@ -124,6 +127,7 @@ export default {
   },
     data : () => ({ 
       loading : false , 
+      showSampleDatas : false,
       firstPage : true ,
       test : { 
         sampleCount : 0 , 
@@ -177,23 +181,27 @@ export default {
 
       nextSample() {
 
+        //if finished
         if (this.test.currentCount ==  this.test.sampleCount  ) {
             this.test.sampleNutrients.push(this.sensorData)
             this.test.start = false 
-
-
+            this.showSampleDatas = false 
+            setTimeout(() => {
+                this.showSampleDatas = true
+            }, 1000)
         }       
-
         else { 
-        this.loading = true ; 
-        this.test.start = false
-        setTimeout(() => {
-            this.loading = false  ; 
-            this.test.start = true 
-            this.test.currentCount += 1 
-            this.test.sampleNutrients.push(this.sensorData)
-            console.log(...this.test.sampleNutrients)
-        }, 1000)
+            this.loading = true ; 
+            this.test.start = false
+            this.showSampleDatas = false
+            setTimeout(() => {
+                this.loading = false  ; 
+                this.test.start = true 
+                this.test.currentCount += 1 
+                this.test.sampleNutrients.push(this.sensorData)
+                console.log(...this.test.sampleNutrients)
+                this.showSampleDatas = true 
+            }, 1000)
         }
        
            

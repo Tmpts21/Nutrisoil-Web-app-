@@ -1,20 +1,57 @@
 <template>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200">
+                <div class=" overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 ">
                         <div class="text-center ">
-                                <div class="text-center">
-                                    <h1 class="font-bold text-gray-500 text-2xl">Soil Nutrient Content</h1>
+                                <div class="text-left mb-4">
+                                    <h1 class="font-bold text-gray-500 text-2xl ">Test Samples Contents</h1>
                                 </div>
-                                <div v-for="(sample , index) in sampleDatas" :key="index">
-                                    {{sample.moistLevel}}
+                                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                            <thead class="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Name
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Nitrogen
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Phosporus
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Photassium
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3">
+                                                        Moisture Level
+                                                    </th>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(sample , index) in sampleDatas" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center">
+                                                       <td class="px-6 py-4">
+                                                        Sample {{index}}
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        {{sample.nitrogen}}mg/L
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        {{sample.phosporus}} mg/L
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        {{sample.potassium}} mg/L
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        {{sample.moistLevel}} %
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>   
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
  
 </template>
        
@@ -22,6 +59,4 @@
 export default {
   props : ["sampleDatas"],
 }
-  
-  
 </script>

@@ -14,6 +14,7 @@
 
         <script src="https://kit.fontawesome.com/01f231e3ab.js" crossorigin="anonymous"></script>
 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <!-- Scripts -->
         @routes
