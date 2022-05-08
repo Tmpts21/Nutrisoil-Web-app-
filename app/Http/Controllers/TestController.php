@@ -9,4 +9,9 @@ class TestController extends Controller
     public function index() { 
         return Inertia::render('PerformTest'); 
     }
+
+    public function save(Request $request) {
+        dump($request->all());
+        return $request->all();
+    }
 }

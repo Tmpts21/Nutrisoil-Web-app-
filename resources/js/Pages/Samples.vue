@@ -41,7 +41,7 @@
                                                         {{sample.potassium}} mg/L
                                                     </td>
                                                     <td class="px-6 py-4">
-                                                        {{sample.moistLevel}} %
+                                                        {{sample.moisture}} %
                                                     </td>
                                                 </tr>
                                             </tbody>

@@ -21,7 +21,7 @@
                                                 </label>
                                                 </div>
                                                 <div class="md:w-2/3">
-                                                <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" type="text" placeholder="Enter title for the test" v-model="test.title">
+                                                <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500" type="text" placeholder="Enter title for the test" v-model="test.title">
                                                 </div>
                                             </div>
                                             <div class="md:flex md:items-center mb-6">
@@ -31,7 +31,7 @@
                                                 </label>
                                                 </div>
                                                 <div class="md:w-2/3">
-                                                <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" type="text" placeholder="Enter no. of samples to test" v-model="test.sampleCount">
+                                                <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500" type="text" placeholder="Enter no. of samples to test" v-model="test.sampleCount">
                                                 </div>
                                             </div>
                                             <div class="md:flex md:items-center">
@@ -58,20 +58,21 @@
                                 <Transition>
 
                                 <div v-if="test.start" class="mb-5">
-                                     <button @click="nextSample()" class="mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
-                                            <p v-if="this.test.currentCount == this.test.sampleCount">
-                                                Finish and continue
-                                            </p>
-                                            <p v-else> Save and Continue to next sample</p>
 
-                                    </button>
+                                    
+                                     <button v-if="this.test.currentCount == this.test.sampleCount" @click="processAndSaveData()" class="mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"> 
+                                               Finish and continue
+                                     </button>
+                                     <button v-else @click="nextSample()" class="mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                                              Save and Continue to next sample
+                                     </button>
                                 </div>
                                 </Transition>
 
                         
                                 <Transition>
                                     <div v-if="showSampleDatas">
-                                         <Samples :sampleDatas="test.sampleNutrients">   
+                                         <Samples :sampleDatas="this.test.sampleNutrients">   
                                         
                                         </Samples>
                                     </div>
@@ -89,33 +90,28 @@
  
 </BreezeAuthenticatedLayout>
 </template>
-       
- 
-
- 
 
 <script>
+import { Inertia } from '@inertiajs/inertia'
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set , onValue} from "firebase/database";
-import {watch } from 'vue';
+import { getDatabase, ref, onValue ,child , get} from "firebase/database";
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import TestDashboard from '../Pages/TestDashboard.vue';
 import Samples from '../Pages/Samples.vue'
 import { Link, useForm } from '@inertiajs/inertia-vue3';
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBb-QVQYrayerKBSA4-r0BfARFaU88x868",
-  authDomain: "nodemcu-7e837.firebaseapp.com",
-  databaseURL: "https://nodemcu-7e837-default-rtdb.firebaseio.com",
-  projectId: "nodemcu-7e837",
-  storageBucket: "nodemcu-7e837.appspot.com",
-  messagingSenderId: "285462049508",
-  appId: "1:285462049508:web:8a1654686ffd9e109a72f1",
-  measurementId: "G-DYK8VHX3J3"
-
+  apiKey: "AIzaSyBdzRx4-G2nf09RPCxph_rp9lzw6tE7nL0",
+  authDomain: "nutrisoil-95b4e.firebaseapp.com",
+  databaseURL: "https://nutrisoil-95b4e-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "nutrisoil-95b4e",
+  storageBucket: "nutrisoil-95b4e.appspot.com",
+  messagingSenderId: "398281107964",
+  appId: "1:398281107964:web:3a52c6f14dc2cd653eea79"
 };
 
-let app = initializeApp(firebaseConfig);
+let app = initializeApp(firebaseConfig);  // initialize firebase app 
 
 export default {
   props : [],
@@ -136,87 +132,69 @@ export default {
         start : false , 
         sampleNutrients : []
       },
-      sensorData : { 
-            moistLevel : 0 ,
-            nitrogen : 0 ,
-            phosporus : 0 , 
-            potassium : 0 ,
-      }
+      sensorData : null 
   }),
   mounted() {
-//     this.readSensorContents(); 
-//     if (localStorage.getItem("showCountInput")) {
-//       this.showCountInput = localStorage.showCountInput;
-//     }
-//     if (localStorage.getItem("soilTestDashboard")) {
-//       this.soilTestDashboard = localStorage.soilTestDashboard;
-//     }
+      // local storage here 
   },
   created () {
-            this.getSensorData()
+        this.getSensorData()
     },
 
   methods : { 
 
-      getSensorData () {
-                    setTimeout(() => {
-                        this.sensorData.moistLevel = Math.floor(Math.random() * 760);
-                        this.sensorData.nitrogen = Math.floor(Math.random() * 255);
-                        this.sensorData.phosporus = Math.floor(Math.random() * 255);
-                        this.sensorData.potassium = Math.floor(Math.random() * 255);
-                        this.getSensorData()
-                    }, 1000)
-                
-            },
+        // initialize the test 
+        setTitleAndSampleCount() { 
+            if(parseInt(this.test.sampleCount > 0 ))
+                    this.test.currentCount = 1 
+                    this.test.start = true 
+                    this.firstPage = false 
+        },
 
-      setTitleAndSampleCount() { 
-          if(parseInt(this.test.sampleCount > 0 ))
-                this.test.currentCount = 1 
-                this.test.start = true 
-                this.firstPage = false 
-                // localStorage.showCountInput = 0 ;
-                // localStorage.soilTestDashboard = 1  ;
-                // localStorage.currentCount = this.currentCount  ;
-      },
-
-      nextSample() {
-
-        //if finished
-        if (this.test.currentCount ==  this.test.sampleCount  ) {
-            this.test.sampleNutrients.push(this.sensorData)
-            this.test.start = false 
-            this.showSampleDatas = false 
-            setTimeout(() => {
-                this.showSampleDatas = true
-            }, 1000)
-        }       
-        else { 
+        // continue to next sample 
+        nextSample() {
             this.loading = true ; 
             this.test.start = false
             this.showSampleDatas = false
+            this.saveSensorData()
             setTimeout(() => {
-                this.loading = false  ; 
-                this.test.start = true 
-                this.test.currentCount += 1 
-                this.test.sampleNutrients.push(this.sensorData)
-                console.log(...this.test.sampleNutrients)
-                this.showSampleDatas = true 
+                    this.loading = false  ; 
+                    this.test.start = true 
+                    this.test.currentCount += 1 
+                    this.showSampleDatas = true 
             }, 1000)
-        }
-       
-           
-            
+        },
         
-    },
+        //save and process data to the backend 
+        processAndSaveData() { 
+            // instead calling @saveSensorData manually add the last item to the array. IDK if I use the @saveSensordata function it is always offset by one. IDK if this is a bug in inertia or in my code 
+            this.test.sampleNutrients.push(this.sensorData);
+            Inertia.post('/saveTest', { 
+                samples: this.test.sampleNutrients,
+                title : this.test.title
+            })
+        },
+
+        // get sensor data from firebase. The "Data" is the name of the key inside the database 
+        getSensorData() { 
+            const db = getDatabase();
+            const dataRef = ref(db, 'Data');
+            onValue(dataRef, (snapshot) => { this.sensorData = snapshot.val() });
+        },
+
+        // Save sensor data in local storage and variable "test.sampleNutrients"
+        saveSensorData() { 
+            console.log('hit')
+            const dbRef = ref(getDatabase());
+            get(child(dbRef, 'Data'))
+                .then((snapshot) => {
+                    if (snapshot.exists()) { this.test.sampleNutrients.push(snapshot.val()) }
+                    else { console.log("No data available") }
+                }).catch((error) => { console.error(error)  });
+        },
     
   },
-     
-
-  
-
-}
-  
-  
+}  
 </script>
 
 <style scoped>

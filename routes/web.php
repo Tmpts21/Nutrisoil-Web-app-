@@ -33,5 +33,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/PerformTesting', [TestController::class, 'index'])->middleware(['auth'])->name('PerformTesting');
 
+Route::post('/saveTest', [TestController::class, 'save'])->middleware(['auth'])->name('saveTest');
+
 
 require __DIR__.'/auth.php';
