@@ -35,5 +35,6 @@ Route::get('/PerformTesting', [TestController::class, 'index'])->middleware(['au
 
 Route::post('/saveTest', [TestController::class, 'save'])->middleware(['auth'])->name('saveTest');
 
+Route::get('/results', [TestController::class, 'test'])->middleware(['auth']);
 
 require __DIR__.'/auth.php';

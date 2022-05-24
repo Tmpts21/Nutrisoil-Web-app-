@@ -16,6 +16,9 @@
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+        <script src="https://kit.fontawesome.com/01f231e3ab.js" crossorigin="anonymous"></script>
+
+
         <!-- Scripts -->
         @routes
         <script src="{{ mix('js/app.js') }}" defer></script>

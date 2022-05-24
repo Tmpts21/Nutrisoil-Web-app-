@@ -9,6 +9,7 @@ use App\Models\Content;
 use Auth ;
 
 
+
 class TestController extends Controller
 {
     public function index() { 
@@ -27,14 +28,20 @@ class TestController extends Controller
             $sample = Content::create([
                 'test_id' => $test-> id , 
                 'nitrogen' => $sample['nitrogen'] ,
-                'phosporus' => $sample['phosporus'] ,
+                'phosporus' => $sample['phosphorus'] ,
                 'potassium' => $sample['potassium'] ,
                 'moist_level' => $sample['moisture'] ,
             ]);
         }
 
-        $nutrient_assessment = $test_service->perform_nutrient_assessment($request->samples);
+        $nutrient_assessment = $test_service->perform_nutrient_assessment($request->samples , $request->title );
 
-        return $nutrient_assessment ; 
+        return Inertia::render("Results" , [
+            'results' => $nutrient_assessment
+        ]);
+    }
+
+    public function test() { 
+        return Inertia::render('Results');
     }
 }

@@ -27,6 +27,8 @@
         "vue-loader": "^17.0.0"
     },
     "dependencies": {
-        "firebase": "^9.6.10"
+        "chart.js": "^3.7.1",
+        "firebase": "^9.6.10",
+        "vue-chartjs": "^4.1.0"
     }
 }

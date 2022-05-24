@@ -50,6 +50,7 @@
                                 </div>
 
                                 <Transition>
+                                    
                                     <div v-if="test.start">
                                             <small class="text-gray-500"> Sample {{test.currentCount}} of {{test.sampleCount}}</small>
                                             <TestDashboard :sensorData="sensorData"></TestDashboard>
@@ -102,14 +103,14 @@ import { Link, useForm } from '@inertiajs/inertia-vue3';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBdzRx4-G2nf09RPCxph_rp9lzw6tE7nL0",
-  authDomain: "nutrisoil-95b4e.firebaseapp.com",
-  databaseURL: "https://nutrisoil-95b4e-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "nutrisoil-95b4e",
-  storageBucket: "nutrisoil-95b4e.appspot.com",
-  messagingSenderId: "398281107964",
-  appId: "1:398281107964:web:3a52c6f14dc2cd653eea79"
-};
+  apiKey: "AIzaSyBb-QVQYrayerKBSA4-r0BfARFaU88x868",
+  authDomain: "nodemcu-7e837.firebaseapp.com",
+  databaseURL: "https://nodemcu-7e837-default-rtdb.firebaseio.com",
+  projectId: "nodemcu-7e837",
+  storageBucket: "nodemcu-7e837.appspot.com",
+  messagingSenderId: "285462049508",
+  appId: "1:285462049508:web:8a1654686ffd9e109a72f1",
+  };
 
 let app = initializeApp(firebaseConfig);  // initialize firebase app 
 
@@ -138,7 +139,7 @@ export default {
       // local storage here 
   },
   created () {
-        this.getSensorData()
+        console.log(this.getSensorData())
     },
 
   methods : { 
@@ -178,7 +179,7 @@ export default {
         // get sensor data from firebase. The "Data" is the name of the key inside the database 
         getSensorData() { 
             const db = getDatabase();
-            const dataRef = ref(db, 'Data');
+            const dataRef = ref(db, 'data');
             onValue(dataRef, (snapshot) => { this.sensorData = snapshot.val() });
         },
 
@@ -186,7 +187,7 @@ export default {
         saveSensorData() { 
             console.log('hit')
             const dbRef = ref(getDatabase());
-            get(child(dbRef, 'Data'))
+            get(child(dbRef, 'data'))
                 .then((snapshot) => {
                     if (snapshot.exists()) { this.test.sampleNutrients.push(snapshot.val()) }
                     else { console.log("No data available") }
