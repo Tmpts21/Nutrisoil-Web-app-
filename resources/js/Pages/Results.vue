@@ -121,6 +121,7 @@
                                                          )
                                                 }}
 
+                                             <div v-if="summary">
                                                 <h5 class = 'font-bold '>Suggestions : </h5>
                                                     <small v-if="summary.nitrogen > 0 && result['nitrogen'].assesment != 'HIGH'" >
                                                     <li class="ml-5">
@@ -141,7 +142,11 @@
                                                    </li>
                                                    </small>
 
+``
 
+                                             </div>
+
+                                             
                                             </div>
 
 

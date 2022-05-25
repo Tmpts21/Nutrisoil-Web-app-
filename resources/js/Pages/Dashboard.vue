@@ -1,8 +1,22 @@
-<script setup>
+<script >
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import { Head } from '@inertiajs/inertia-vue3';
 import { Link } from '@inertiajs/inertia-vue3';
+
+export default {
+  props : ["tests"],
+  components : {
+      BreezeAuthenticatedLayout ,
+      Head ,
+      Link 
+  }
+}
 </script>
+
+
+
+
+
 
 <template>
     <Head title="Soil Test" />
@@ -33,10 +47,12 @@ import { Link } from '@inertiajs/inertia-vue3';
                         <h5 class="font-bold">Previous Tests </h5>
                         <hr>
                         <br>
-                        <div class="mb-5 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg " role="alert">
-                            <p class="font-bold">September 6 2022</p>
-                            <p>Something not ideal might be happening.</p>
+                        <div v-for="(test,index) in tests" :key="index" class="mb-5 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg " role="alert">
+                            <span class="font-bold float-left">Title : {{test.name}} </span>
+                            <span class="font-bold float-right">Date : {{test.created_at}} </span>
+                        <br>
                         </div>
+
 
                      </div>
                 </div>

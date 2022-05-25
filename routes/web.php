@@ -4,6 +4,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\DashboardController;
+
 
 
 /*
@@ -26,15 +29,14 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/PerformTesting', [TestController::class, 'index'])->middleware(['auth'])->name('PerformTesting');
 
 Route::post('/saveTest', [TestController::class, 'save'])->middleware(['auth'])->name('saveTest');
 
 Route::get('/results', [TestController::class, 'test'])->middleware(['auth']);
+
+Route::get('/history', [HistoryController::class, 'getAllHistoryData'])->middleware(['auth'])->name('history');
 
 require __DIR__.'/auth.php';

@@ -77,6 +77,11 @@ const showingNavigationDropdown = ref(false);
                             Dashboard
                         </BreezeResponsiveNavLink>
                     </div>
+                        <div class="pt-2 pb-3 space-y-1">
+                        <BreezeResponsiveNavLink :href="route('history')" :active="route().current('history')">
+                            History
+                        </BreezeResponsiveNavLink>
+                    </div>
 
                     <!-- Responsive Settings Options -->
                     <div class="pt-4 pb-1 border-t border-gray-200">
