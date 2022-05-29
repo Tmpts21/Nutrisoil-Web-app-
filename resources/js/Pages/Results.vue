@@ -1,17 +1,16 @@
 <template>
 <BreezeAuthenticatedLayout>
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white">
+        <div class="py-12 bg-white">
+            <div class="max-w-7xl h-50 mx-auto sm:px-6 lg:px-8">
+                <div class="sm:rounded-lg">
+                    <div class="p-6">
                             
 
                         <div v-for="(result , index ) in results " :key="index">
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Sample {{index + 1}} </h5>
 
 
-                        <div class="w-full flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                            <div class="flex flex-col justify-between p-4 leading-normal">                    
+                        <div class="w-full content-center items-center rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+                            <div class=" p-4 leading-normal">                    
                       <h5>
                       <span class="font-bold"> Assessment : </span>   
                                 {{calulateOverAllAssessment(
@@ -35,8 +34,9 @@
                               
                          
                             <hr>
+
                             <div class="grid grid-cols-4 gap-4">
-                                <div class="col-span-2 ">
+                                <div class="col-span-2">
                                         <BarChart :chart-data="this.getChartData([
                                         result['nitrogen'].value,
                                         result['phosporus'].value,
@@ -160,7 +160,43 @@
                                     </div>
                                             
                                 </div>
-                            </div>        
+                                <br>
+                                <div v-if="n">
+                                <h5 class="font-bold mb-3">
+                                    Previous Npk results  <i class="fa-solid fa-chart-line ml-3 text-lg text-green-400"></i>
+                                </h5>
+                                <hr>
+                                <br>
+                                   <div class="max-w-full mx-auto">
+                                    <div class="sm:grid sm:h-24 sm:grid-flow-row sm:gap-12 sm:grid-cols-2">
+                                        <div class="flex flex-col bg-white justify-center px-4 py-4 border border-blue-300 border-4 rounded ">
+                                            <div>
+                                                <LineChart :chartData="this.getLineChartData(n , dates , 'nitrogen' , '#93C5FD')"></LineChart>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-orange-300 border-4 rounded sm:mt-0  ">
+                                            <div>
+                                                <LineChart :chartData="this.getLineChartData(p , dates , 'phosphorus' ,'#FDBA74')"></LineChart>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-gray-300 border-4 rounded sm:mt-0  ">
+                                            <div>
+                                                <LineChart :chartData="this.getLineChartData(k , dates , 'potassium' ,'#D1D5DB')"></LineChart>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-green-300 border-4 rounded sm:mt-0  ">
+                                            <div>
+                                                <LineChart :chartData="this.getLineChartData(ml , dates , 'moisture level' ,'#86EFAC')"></LineChart>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>        
 
                                             
 
@@ -180,14 +216,16 @@
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import BarChart from '../Pages/Bar.vue'; 
+import LineChart from '../Pages/Line.vue'; 
 
 
 export default {
-  props : ['results'],
+  props : ['results','n','p','k','ml','dates'],
   components : { 
       BreezeAuthenticatedLayout,
       Link ,
-      BarChart
+      BarChart ,
+      LineChart
   },
     data : () => ({ 
         summary : {} ,
@@ -210,6 +248,21 @@ export default {
                 }
             ]
         }
+        return chartData ; 
+      } ,
+
+    getLineChartData(values , dates , name ,color) { 
+        const chartData = {
+            labels: dates ,
+                datasets: [
+                    {
+                    label: name,
+                    backgroundColor: color,
+                    data: values
+                    }
+                ] ,
+            }
+    
         return chartData ; 
       } ,
 

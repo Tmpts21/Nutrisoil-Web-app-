@@ -28,9 +28,17 @@ const showingNavigationDropdown = ref(false);
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <BreezeNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    Dashboard <i class="ml-3 text-lg fa-solid fa-list-check text-green-600"></i>
                                 </BreezeNavLink>
                             </div>
+
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <BreezeNavLink :href="route('soiltestdashboard')" :active="route().current('soiltestdashboard')">
+                                    Soil Testing  Dashboard <i class="ml-3 text-lg fa-solid fa-microscope text-green-600"></i>
+                                </BreezeNavLink>
+                            </div>
+              
+
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -78,8 +86,8 @@ const showingNavigationDropdown = ref(false);
                         </BreezeResponsiveNavLink>
                     </div>
                         <div class="pt-2 pb-3 space-y-1">
-                        <BreezeResponsiveNavLink :href="route('history')" :active="route().current('history')">
-                            History
+                        <BreezeResponsiveNavLink :href="route('soiltestdashboard')" :active="route().current('soiltestdashboard')">
+                            Soil Testing Dashboard
                         </BreezeResponsiveNavLink>
                     </div>
 
@@ -89,11 +97,6 @@ const showingNavigationDropdown = ref(false);
                         <div class="mt-3 space-y-1">
                             <BreezeResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Log Out
-                            </BreezeResponsiveNavLink>
-                        </div>
-                        <div class="mt-3 space-y-1">
-                            <BreezeResponsiveNavLink href="#" method="post" as="button">
-                                Run Test 
                             </BreezeResponsiveNavLink>
                         </div>
                     </div>

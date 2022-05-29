@@ -38,22 +38,9 @@ export default {
 
                             <br>
 
-                            <Link :href="route('PerformTesting')" class="shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
-                               Start Soil Testing
-                            </Link>
+                        </div>
+
                             
-                        </div>
-                        
-                        <h5 class="font-bold">Previous Tests </h5>
-                        <hr>
-                        <br>
-                        <div v-for="(test,index) in tests" :key="index" class="mb-5 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg " role="alert">
-                            <span class="font-bold float-left">Title : {{test.name}} </span>
-                            <span class="font-bold float-right">Date : {{test.created_at}} </span>
-                        <br>
-                        </div>
-
-
                      </div>
                 </div>
             </div>

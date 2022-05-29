@@ -7,7 +7,6 @@
                                 <div class="text-center">
                                     <h1 class="font-bold text-gray-500 text-2xl">Soil Nutrient Content</h1>
                                 </div>
-
                                 <div class="max-w-full px-4 py-4 mx-auto">
                                     <div class="sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-4">
                                         <div class="flex flex-col justify-center px-4 py-4 bg-white border border-blue-300 border-4 rounded rounded-full">

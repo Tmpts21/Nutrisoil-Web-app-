@@ -37,6 +37,11 @@ Route::post('/saveTest', [TestController::class, 'save'])->middleware(['auth'])-
 
 Route::get('/results', [TestController::class, 'test'])->middleware(['auth']);
 
-Route::get('/history', [HistoryController::class, 'getAllHistoryData'])->middleware(['auth'])->name('history');
+Route::get('/soiltestdashboard', [TestController::class, 'getAllTests'])->middleware(['auth'])->name('soiltestdashboard');
+
+Route::get('/view/{id}', [TestController::class, 'show'])->middleware(['auth'])->name('view');
+
+
+Route::get('/updateTest/{id}', [TestController::class, 'update'])->middleware(['auth'])->name('updateTest');
 
 require __DIR__.'/auth.php';
