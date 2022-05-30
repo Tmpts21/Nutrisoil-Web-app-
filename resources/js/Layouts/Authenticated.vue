@@ -28,13 +28,20 @@ const showingNavigationDropdown = ref(false);
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <BreezeNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard <i class="ml-3 text-lg fa-solid fa-list-check text-green-600"></i>
+                                   <i class="mr-3 text-lg fa-solid fa-list-check text-green-600"></i>  Dashboard 
                                 </BreezeNavLink>
                             </div>
 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <BreezeNavLink :href="route('soiltestdashboard')" :active="route().current('soiltestdashboard')">
-                                    Soil Testing  Dashboard <i class="ml-3 text-lg fa-solid fa-microscope text-green-600"></i>
+                                   <i class="mr-3 text-lg fa-solid fa-microscope text-green-600"></i>  Soil Testing  Dashboard 
+                                </BreezeNavLink>
+                            </div>
+
+                            
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                 <BreezeNavLink :href="route('fertilizerScheduling')" :active="route().current('fertilizerScheduling')">
+                                   <i class="fa-solid fa-calendar-check mr-3 text-green-600"></i>   Fertilizer Scheduling
                                 </BreezeNavLink>
                             </div>
               
@@ -85,9 +92,15 @@ const showingNavigationDropdown = ref(false);
                             Dashboard
                         </BreezeResponsiveNavLink>
                     </div>
-                        <div class="pt-2 pb-3 space-y-1">
+                    <div class="pt-2 pb-3 space-y-1">
                         <BreezeResponsiveNavLink :href="route('soiltestdashboard')" :active="route().current('soiltestdashboard')">
                             Soil Testing Dashboard
+                        </BreezeResponsiveNavLink>
+                    </div>
+
+                    <div class="pt-2 pb-3 space-y-1">
+                        <BreezeResponsiveNavLink :href="route('fertilizerScheduling')" :active="route().current('fertilizerScheduling')">
+                            Fertilizer Scheduling 
                         </BreezeResponsiveNavLink>
                     </div>
 

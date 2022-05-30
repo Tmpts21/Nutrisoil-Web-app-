@@ -6,6 +6,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TaskController;
+
 
 
 
@@ -41,7 +43,11 @@ Route::get('/soiltestdashboard', [TestController::class, 'getAllTests'])->middle
 
 Route::get('/view/{id}', [TestController::class, 'show'])->middleware(['auth'])->name('view');
 
-
 Route::get('/updateTest/{id}', [TestController::class, 'update'])->middleware(['auth'])->name('updateTest');
+
+
+Route::get('/fertilizerScheduling', [TaskController::class, 'index'])->middleware(['auth'])->name('fertilizerScheduling');
+
+Route::post('/task/save', [TaskController::class, 'save'])->middleware(['auth'])->name('save_task');
 
 require __DIR__.'/auth.php';
