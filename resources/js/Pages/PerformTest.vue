@@ -203,7 +203,7 @@ export default {
 */
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 1.5s ease;
 }
 
 .v-enter-from,

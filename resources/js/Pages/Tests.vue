@@ -37,13 +37,13 @@ export default {
                         </div>
                           
                         
-                        <p class="font-bold"> Previous testing results </p>
+                        <p class="font-bold text-green-500 "> Previous testing results </p>
                         <br>
                         <hr class="mb-5">
                     
 
 
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div  v-if="!tests" class="relative overflow-x-auto shadow-md sm:rounded-lg">
                         
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 text-center">
                     <thead class="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -73,6 +73,12 @@ export default {
                                     </tr>
                                 </tbody>
                                 </table>
+                    </div>
+
+                    <div class="font-bold text-center" v-else >
+                        <li>
+                            <small class="font-bold">No available tests</small>
+                        </li>
                     </div>
 
                     </div>

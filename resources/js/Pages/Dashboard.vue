@@ -34,27 +34,7 @@ export default {
 
 
     <BreezeAuthenticatedLayout>
-        <template #header>
-                 <div class="flex mb-4 justify-between items-center">
-                    <div>
-                        <h5 class="mb-0 font-medium text-xl">{{weather.city.name}}</h5>
-                        <h6 class="mb-0">{{new Date(weather.list[0].dt * 1000).toLocaleDateString('en-us')}}</h6><small>{{weather.list[0].weather.description}}</small>
-                    </div>
-                    <div class="text-right">
-                        <h3 class="font-bold text-4xl mb-0">
-                            <span class="text-red">
-                            </span>
-                            <small class="text-sm">Temperature </small>
-                            <span class="flex">
-                                <img :src="'http://openweathermap.org/img/wn/' + weather.list[0].weather[0].icon + '@4x.png'" class="block w-14 h-14 ml-3 ">
-                                <span>
-                                {{Math.round(weather.list[0].main.temp - 273.15)}}&deg;
 
-                                </span>
-                            </span></h3>
-                    </div>
-                </div>
-        </template>
   
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -70,10 +50,8 @@ export default {
                             Today 
                         </h5>
                     
+                 
                         <div v-if="!taskToday" class="ml-3 ">
-                            No Task for today 
-                        </div>
-                        <div v-else class="ml-3 ">
                                         <div class="relative overflow-x-auto shadow-lg sm:rounded-lg">
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <thead class="text-center text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
@@ -112,6 +90,12 @@ export default {
                                     </div>
                         </div>
 
+                        <div v-else class="ml-8 text-center ">
+                           <li>
+                               <small class="font-bold"> (No Tasks for today) </small>
+                           </li>      
+                        </div>
+
 
                         <br>
                         <br>
@@ -123,10 +107,8 @@ export default {
                         <h5 class="font-bold text-green-700 ml-5 ">
                             Pending  
                         </h5>
+                    
                         <div v-if="!pendingTasks" class="ml-3">
-                            Pending :
-                        </div>
-                        <div v-else class="ml-3">
                                 <div class="relative overflow-x-auto shadow-lg sm:rounded-lg">
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <thead class="text-center text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-900 dark:text-gray-400">
@@ -169,91 +151,19 @@ export default {
                                             </tbody>
                                         </table>
                                     </div>
-
-
-
-
                         </div>
 
-                        <br>
-                        <hr>
-                        <br>
-                        <br>
-                        <br>
-
-                        
-
-                        <h5 class="font-bold text-green-600"> Weather forecast for the next 24 hours</h5>
-                        <div class="mb-12 text-center">
-                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                            <thead class="text-center text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-                                               
-                                                    <th scope="col" class="px-6 py-3">
-                                                        Date 
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        Temperature
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        icon
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3">
-                                                        description
-                                                    </th>
-                                     
-                                            </thead>
-                                            <tbody>
-                                                <tr v-for="(w , index) in weather.list " :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center">
-                                                    <td>
-                                                       {{new Date(w.dt * 1000).toLocaleDateString('en-us')}}  {{new Date(w.dt * 1000).toLocaleTimeString().replace(/:\d+ /, ' ')}}
-                                                    </td>
-                                                    <td>
-                                                        {{ Math.round(w.main.temp - 273.15) }}°                                                   
-                                                    </td>
-                                                    <td class="content-center">
-                                                        <img :src="'http://openweathermap.org/img/wn/' + w.weather[0].icon + '@2x.png'" class="w-14 h-14 ">
-                                                    </td>
-                                                    <td>
-                                                        {{ w.weather[0].description}}
-                                                    </td>
-                                          
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                           
-                                    
-                              
-                                        </div>
-                                    </div>
-      
-
+                        <div v-else class="ml-8 text-center">
+                            <li>
+                                 <small class="font-bold"> (no pending tasks) </small>     
+                            </li>
                         </div>
 
-      
 
-                            
-                     </div>
-            
+
+                    </div>
+                </div>
+            </div>
         </div>
 
     </BreezeAuthenticatedLayout>
