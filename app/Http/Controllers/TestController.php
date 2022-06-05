@@ -24,6 +24,7 @@ class TestController extends Controller
     public function save(Request $request , TestService $test_service  ) {
 
         //save to db 
+        $prev_test = Content::orderBy('id' , 'DESC')->first() ; 
 
         if(!$request->test_id) { 
             $test = Test::create([
@@ -51,7 +52,6 @@ class TestController extends Controller
             
         }
 
- 
 
         $nutrient_assessment = $test_service->perform_nutrient_assessment($request->samples , $request->title );
 
@@ -61,26 +61,17 @@ class TestController extends Controller
             ]);
         }
         else { 
-            $contents = Test::find($request->test_id)->contents;
 
-            $n=[]; $p=[]; $k=[]; $ml=[]; $dates=[] ;  
-
-            foreach($contents as $content) { 
-                array_push($n , $content->nitrogen); 
-                array_push($p , $content->phosporus); 
-                array_push($k , $content->potassium); 
-                array_push($ml , $content->moist_level); 
-                array_push($dates, date_format($content->created_at,"m/d/y g:i A"));
-            } 
-    
+            $contents = $this->getNpkContents(Test::find($request->test_id)->contents);
 
             return Inertia::render("Results" , [
+                'prev' => $prev_test,
                 'results' => $nutrient_assessment,
-                'n' => $n,
-                'p' => $p,
-                'k' => $k,
-                'dates' => $dates,
-                'ml' => $ml,
+                'n' => $contents[0],
+                'p' => $contents[1],
+                'k' => $contents[2],
+                'ml' => $contents[3],
+                'dates' => $contents[4],
             ]);
         }
     
@@ -101,26 +92,20 @@ class TestController extends Controller
     public function show($id) { 
         $test = Test::find($id); 
 
-        $contents =  $test->contents ; 
-        $n=[]; $p=[]; $k=[]; $ml=[]; $dates=[] ;  
-
-        foreach($contents as $content) { 
-            array_push($n , $content->nitrogen); 
-            array_push($p , $content->phosporus); 
-            array_push($k , $content->potassium); 
-            array_push($ml , $content->moist_level); 
-            array_push($dates, date_format($content->created_at,"m/d/y g:i A"));
-        } 
-
-
+        $contents = $this->getNpkContents($test->contents); 
+        
         return Inertia::render('ViewTest' , [
-            'n' => $n ,
-            'p' => $p,
-            'k' => $k ,
-            'ml' => $ml ,
-            'dates' => $dates 
+            'n' => $contents[0] ,
+            'p' => $contents[1],
+            'k' => $contents[2] ,
+            'ml' => $contents[3] ,
+            'dates' => $contents[4] ,
+            'fieldName' => $test->name
         ]);
     }
+
+
+    
 
     public function getNpkContents($contents) { 
         $n=[]; $p=[]; $k=[]; $ml=[]; $dates=[] ;  
@@ -132,5 +117,7 @@ class TestController extends Controller
             array_push($ml , $content->moist_level); 
             array_push($dates, date_format($content->created_at,"m/d/y g:i A"));
         } 
+
+        return array($n , $p , $k , $ml , $dates ) ;
     }
 }

@@ -46,11 +46,13 @@ Route::get('/updateTest/{id}', [TestController::class, 'update'])->middleware(['
 
 
 
-Route::get('/fertilizerScheduling', [TaskController::class, 'index'])->middleware(['auth'])->name('fertilizerScheduling');
+Route::get('/taskScheduler', [TaskController::class, 'index'])->middleware(['auth'])->name('taskScheduler');
 
-Route::post('/task/save', [TaskController::class, 'save'])->middleware(['auth'])->name('save_task');
+Route::post('/saveTask', [TaskController::class, 'save'])->middleware(['auth'])->name('save_task');
 
+Route::post('/removeTask', [TaskController::class, 'removeTask'])->middleware(['auth'])->name('removeTask');
 
+Route::post('/finishTask', [TaskController::class, 'finishTask'])->middleware(['auth'])->name('removeTask');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 

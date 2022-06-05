@@ -18,14 +18,34 @@ class TaskController extends Controller
     }
 
     public function save(Request $request) { 
-
         $task = Task::create([
             'field_name' => $request->fieldName,
             'deadline' => $request->scheduledDate,
             'remarks' => $request->remarks
         ]);
+
+        return redirect()->back()->with('message','Task has been successfully saved'); 
+
+    }
+
+    public function removeTask(Request $request) { 
+
+        $task = Task::findorfail($request->id);
         
-        return redirect('FertilizerScheduling')->with('message','Task has been successfully saved');
+        $task->delete() ;
+
+        return redirect()->back()->with('message','Task Successfully Removed'); 
+    }
+
+    public function finishTask(Request $request) { 
+
+        $task = Task::findorfail($request->id); 
+
+        $task->status = 'finished' ; 
+
+        $task->save(); 
+
+        return redirect()->back()->with('message','Task Successfully Finished'); 
 
     }
 }

@@ -40,7 +40,7 @@ const showingNavigationDropdown = ref(false);
 
                             
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                 <BreezeNavLink :href="route('fertilizerScheduling')" :active="route().current('fertilizerScheduling')">
+                                 <BreezeNavLink :href="route('taskScheduler')" :active="route().current('taskScheduler')">
                                    <i class="fa-solid fa-calendar-check mr-3 text-green-600"></i>   Fertilizer Scheduling
                                 </BreezeNavLink>
                             </div>
@@ -105,14 +105,14 @@ const showingNavigationDropdown = ref(false);
                     </div>
 
                     <div class="pt-2 pb-3 space-y-1">
-                        <BreezeResponsiveNavLink :href="route('fertilizerScheduling')" :active="route().current('fertilizerScheduling')">
+                        <BreezeResponsiveNavLink :href="route('taskScheduler')" :active="route().current('taskScheduler')">
                            <i class="fa-solid fa-calendar-check mr-3 text-green-600"></i>    Fertilizer Scheduling 
                         </BreezeResponsiveNavLink>
                     </div>
 
                     <div class="pt-2 pb-3 space-y-1">
                         <BreezeResponsiveNavLink :href="route('weatherDashboard')" :active="route().current('weatherDashboard')">
-                        <i class="fa-solid fa-cloud-moon-rain mr-3 text-lg text-green-600"></i>    Fertilizer Scheduling   
+                        <i class="fa-solid fa-cloud-moon-rain mr-3 text-lg text-green-600"></i>    Weather Dashboard   
                         </BreezeResponsiveNavLink>
                     </div>
 

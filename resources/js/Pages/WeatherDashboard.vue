@@ -73,7 +73,7 @@ export default {
                                                 <p class="font-bold text-sm text-center text-gray-900"> {{ Math.round(weather.list[9].main.temp - 273.15)}}°</p>
                                                 <img :src="'http://openweathermap.org/img/wn/' + weather.list[9].weather[0].icon + '@2x.png'" class="w-14 h-14 " style="display: block;margin-left: auto;margin-right: auto;">
 
-                                       </div>
+                                            </div>
 
                                          <div class="mt-5 bg-green-200 flex flex-col justify-center px-5 py-5 bg-white border border-green-400 border-4 rounded rounded-xl">
                                                 <p class="text-sm font-bold text-center text-gray-900">{{new Date(weather.list[19].dt * 1000).toDateString()}}  </p>

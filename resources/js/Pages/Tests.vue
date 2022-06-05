@@ -20,16 +20,12 @@ export default {
 
 
     <BreezeAuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Soil Testing Dashboard 
-            </h2>
-        </template>
+
   
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200">
+                <div class="">
+                    <div class="p-6">
                         <div>
                             <Link :href="route('PerformTesting')" class="bg-transparent hover:bg-green-200 text-green-dark font-semibold hover:text-green-500 py-2 px-4 border border-green-400 hover:border-transparent rounded float-right">
                               Add New  <i class="fa-solid fa-plus text-green-500 text-lg ml-3"></i>
@@ -37,42 +33,37 @@ export default {
                         </div>
                           
                         
-                        <p class="font-bold text-green-500 "> Previous testing results </p>
+                        <p class="font-bold text-black "> <i class="fa-solid fa-clock-rotate-left text-green-500 mr-3 "></i>  Previous testing results </p>
                         <br>
                         <hr class="mb-5">
                     
 
 
-        <div  v-if="!tests" class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div  v-if="tests.length">
+                 <div class="max-w-full mx-auto ">
+                    <div class="sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-1">
+                        <div   v-for="(test,index) in tests" :key="index" class="mt-5 bg-green-100 flex py-5 flex-col justify-center px-5 py-12 border border-green-500 border-4 rounded rounded-xl">
+                           <p>Field Name : <span class="font-bold">{{test.name}}</span>
+                           <span class="float-right">
+                                 <Link :href="route('view' , {id : test.id})" class="float-right font-bold shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+                                            <i class="fa-solid fa-eye mr-3 text-lg text-white"></i>    View Data 
+                                </Link>
+                           </span>
+                           </p> 
+                           <p>Date : <span class="font-bold">{{new Date(test.created_at).toDateString()}}</span>
+                               <span class="float-right">
+                                       <Link :href="route('updateTest' , {id : test.id})" class=" mt-3 float-right font-bold shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+                                               <i class="fa-solid fa-sun-plant-wilt mr -3 text-lg text-white"></i> Start Testing 
+                                        </Link>
+                               </span>
+                            </p> 
+                           
+                        </div>
+                        <br>
+                    </div>
+                </div>  
                         
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 text-center">
-                    <thead class="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                    <th class="px-4 py-2">Name</th>
-                                    <th class="px-4 py-2">Date</th>
-                                    <th class="px-4 py-2"></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-center">
-                                    <tr v-for="(test,index) in tests" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center ">
-                                        <td class="px-4 py-2">      
-                                            {{test.name}}
-                                        </td>
-                                        <td class="px-4 py-2">      
-                                            {{new Date(test.created_at).toISOString().slice(0, 10)}}
-                                        </td>
-                                        <td class="px-4 py-2">
-                                            <Link :href="route('view' , {id : test.id})" class="float-right font-bold shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
-                                                View Data <i class="fa-solid fa-eye ml-3 text-lg text-white"></i>
-                                            </Link>
-                                            <Link :href="route('updateTest' , {id : test.id})" class="mr-5 float-right font-bold shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
-                                                Start Testing <i class="fa-solid fa-sun-plant-wilt ml-3 text-lg text-white"></i>
-                                            </Link>
-                                    
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                </table>
+
                     </div>
 
                     <div class="font-bold text-center" v-else >

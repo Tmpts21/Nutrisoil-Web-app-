@@ -38539,8 +38539,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Layouts/Authenticated.vue */ "./resources/js/Layouts/Authenticated.vue");
 /* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
 
 
 
@@ -38556,7 +38555,18 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   created: function created() {},
-  methods: {}
+  methods: {
+    removeTask: function removeTask(task_id) {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.post('/removeTask', {
+        id: task_id
+      });
+    },
+    finishTask: function finishTask(task_id) {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.post('/finishTask', {
+        id: task_id
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -38572,32 +38582,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
-/* harmony import */ var _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Layouts/Authenticated.vue */ "./resources/js/Layouts/Authenticated.vue");
+/* harmony import */ var _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Layouts/Authenticated.vue */ "./resources/js/Layouts/Authenticated.vue");
+/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['fields'],
   components: {
-    BreezeAuthenticatedLayout: _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    BreezeAuthenticatedLayout: _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Head: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.Head,
+    Link: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.Link
   },
-  setup: function setup() {
-    var form = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({
+  data: function data() {
+    return {
       fieldName: '',
       scheduledDate: '',
       remarks: ''
-    });
-
-    function submit() {
-      if (this.form.fieldName === '' || this.form.scheduledDate === '') return;else _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.post('/task/save', form);
-    }
-
-    return {
-      form: form,
-      submit: submit
     };
+  },
+  created: function created() {},
+  methods: {
+    submit: function submit() {
+      if (this.fieldName === '' || this.scheduledDate === '') return;else _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.post('/saveTask', {
+        fieldName: this.fieldName,
+        scheduledDate: this.scheduledDate,
+        remarks: this.remarks
+      });
+    }
   }
 });
 
@@ -38646,7 +38660,10 @@ chart_js__WEBPACK_IMPORTED_MODULE_0__.Chart.register(chart_js__WEBPACK_IMPORTED_
   data: function data() {
     return {
       chartOptions: {
-        responsive: true
+        responsive: true,
+        font: {
+          size: 14
+        }
       }
     };
   }
@@ -38888,7 +38905,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['results', 'n', 'p', 'k', 'ml', 'dates'],
+  props: ['prev', 'results', 'n', 'p', 'k', 'ml', 'dates'],
   components: {
     BreezeAuthenticatedLayout: _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     Link: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.Link,
@@ -38897,7 +38914,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      summary: {}
+      summary: {},
+      overAll: ''
     };
   },
   mounted: function mounted() {},
@@ -38931,14 +38949,10 @@ __webpack_require__.r(__webpack_exports__);
         'LOW': 10,
         'EXCESSIVE': 10,
         'MEDIUM': 30,
-        'HIGH': 50
+        'HIGH': 50,
+        'VERY HIGH': 10
       };
-      var ML_TABLE = {
-        'BAD': 20,
-        'GOOD': 30,
-        'VERY GOOD': 50
-      };
-      var sum = NPK_TABLE[n] + NPK_TABLE[p] + NPK_TABLE[k] + ML_TABLE[ml];
+      var sum = NPK_TABLE[n] + NPK_TABLE[p] + NPK_TABLE[k] + NPK_TABLE[ml];
       /*
        poor  = 0 - 25
        bad   = 25 - 75 
@@ -38946,7 +38960,10 @@ __webpack_require__.r(__webpack_exports__);
        very good = 125 - 200 
       */
 
-      if (sum <= 25) return "POOR";else if (sum >= 25 && sum <= 100) return 'BAD';else if (sum > 100 && sum <= 150) return 'GOOD';else if (sum > 150 && sum <= 200) return 'VERY GOOD';else return "N/A";
+      var ret_val = "";
+      if (sum <= 25) ret_val = "POOR";else if (sum >= 25 && sum <= 100) ret_val = 'BAD';else if (sum > 100 && sum <= 150) ret_val = 'GOOD';else if (sum > 150 && sum <= 200) ret_val = 'VERY GOOD';else ret_val = "N/A";
+      this.overAll = ret_val;
+      return ret_val;
     },
     getSummarySuggestion: function getSummarySuggestion(n, p, k) {
       var IDEAL_NPK = {
@@ -38960,6 +38977,9 @@ __webpack_require__.r(__webpack_exports__);
         'potassium': IDEAL_NPK.potassium - k
       };
       this.summary = summary;
+    },
+    getPercentageChange: function getPercentageChange(new_val, old_val) {
+      return Math.round((new_val - old_val) / old_val * 100);
     }
   }
 });
@@ -39045,7 +39065,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['n', 'p', 'k', 'ml', 'dates'],
+  props: ['n', 'p', 'k', 'ml', 'dates', 'fieldName'],
   components: {
     BreezeAuthenticatedLayout: _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     Link: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.Link,
@@ -39650,7 +39670,7 @@ var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Fertilizer Scheduling ");
+var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Weather Dashboard ");
 
 var _hoisted_39 = {
   "class": "pt-4 pb-1 border-t border-gray-200"
@@ -39707,8 +39727,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8
   /* PROPS */
   , ["href", "active"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["BreezeNavLink"], {
-    href: _ctx.route('fertilizerScheduling'),
-    active: _ctx.route().current('fertilizerScheduling')
+    href: _ctx.route('taskScheduler'),
+    active: _ctx.route().current('taskScheduler')
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_14, _hoisted_15];
@@ -39815,8 +39835,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8
   /* PROPS */
   , ["href", "active"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["BreezeResponsiveNavLink"], {
-    href: _ctx.route('fertilizerScheduling'),
-    active: _ctx.route().current('fertilizerScheduling')
+    href: _ctx.route('taskScheduler'),
+    active: _ctx.route().current('taskScheduler')
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_34, _hoisted_35];
@@ -40566,37 +40586,49 @@ var _hoisted_3 = {
 var _hoisted_4 = {
   "class": "p-6 bg-white border-b border-gray-200"
 };
+var _hoisted_5 = {
+  key: 0,
+  "class": "alert"
+};
+var _hoisted_6 = {
+  "class": "bg-green-100 text-green-700 p-4",
+  role: "alert"
+};
 
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
-  "class": "font-bold text-green-600"
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+  "class": "font-bold text-black"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "fa-solid fa-list-check mr-3 text-green-700"
 }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Tasks ")], -1
 /* HOISTED */
 );
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
   "class": "font-bold ml-5 text-green-700"
 }, " Today ", -1
 /* HOISTED */
 );
 
-var _hoisted_8 = {
-  key: 0,
+var _hoisted_11 = {
+  key: 1,
   "class": "ml-3"
 };
-var _hoisted_9 = {
+var _hoisted_12 = {
   "class": "relative overflow-x-auto shadow-lg sm:rounded-lg"
 };
-var _hoisted_10 = {
+var _hoisted_13 = {
   "class": "w-full text-sm text-left text-gray-500 dark:text-gray-400"
 };
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
   "class": "text-center text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
@@ -40610,71 +40642,73 @@ var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 }, " Scheduled Date "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
   "class": "px-6 py-3 text-black"
+}, " Status "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  scope: "col",
+  "class": "px-6 py-3 text-black"
 }, " Action ")], -1
 /* HOISTED */
 );
 
-var _hoisted_12 = {
+var _hoisted_15 = {
   "class": "font-bold py-2 text-black"
 };
-var _hoisted_13 = {
-  "class": "font-bold py-2 text-black"
-};
-var _hoisted_14 = {
-  "class": "font-bold py-2 text-black"
-};
-
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-  "class": "font-bold py-2 text-black"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  "class": "bg-transparent hover:bg-green-200 text-green-dark font-semibold hover:text-green-500 py-2 px-4 border border-green-400 hover:border-transparent rounded"
-}, "Done")], -1
-/* HOISTED */
-);
-
 var _hoisted_16 = {
-  key: 1,
+  "class": "font-bold py-2 text-black"
+};
+var _hoisted_17 = {
+  "class": "font-bold py-2 text-black"
+};
+var _hoisted_18 = {
+  "class": "font-bold py-2 text-black"
+};
+var _hoisted_19 = {
+  "class": "font-bold py-2 text-black"
+};
+var _hoisted_20 = ["onClick"];
+var _hoisted_21 = ["onClick"];
+var _hoisted_22 = {
+  key: 2,
   "class": "ml-8 text-center"
 };
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
   "class": "font-bold"
 }, " (No Tasks for today) ")], -1
 /* HOISTED */
 );
 
-var _hoisted_18 = [_hoisted_17];
+var _hoisted_24 = [_hoisted_23];
 
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
   "class": "font-bold text-green-700 ml-5"
 }, " Pending ", -1
 /* HOISTED */
 );
 
-var _hoisted_23 = {
-  key: 2,
+var _hoisted_29 = {
+  key: 3,
   "class": "ml-3"
 };
-var _hoisted_24 = {
+var _hoisted_30 = {
   "class": "relative overflow-x-auto shadow-lg sm:rounded-lg"
 };
-var _hoisted_25 = {
+var _hoisted_31 = {
   "class": "w-full text-sm text-left text-gray-500 dark:text-gray-400"
 };
 
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
+var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
   "class": "text-center text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-900 dark:text-gray-400"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
@@ -40695,39 +40729,35 @@ var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_27 = {
+var _hoisted_33 = {
   "class": "font-bold py-2 text-black"
 };
-var _hoisted_28 = {
+var _hoisted_34 = {
   "class": "font-bold py-2 text-black"
 };
-var _hoisted_29 = {
+var _hoisted_35 = {
   "class": "font-bold py-2 text-black"
 };
-var _hoisted_30 = {
+var _hoisted_36 = {
   "class": "font-bold py-2 text-black"
 };
-
-var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_37 = {
   "class": "font-bold py-2 text-black"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  "class": "bg-transparent hover:bg-green-200 text-green-dark font-semibold hover:text-green-500 py-2 px-4 border border-green-400 hover:border-transparent rounded"
-}, "Done")], -1
-/* HOISTED */
-);
-
-var _hoisted_32 = {
-  key: 3,
+};
+var _hoisted_38 = ["onClick"];
+var _hoisted_39 = ["onClick"];
+var _hoisted_40 = {
+  key: 4,
   "class": "ml-8 text-center"
 };
 
-var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
+var _hoisted_41 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
   "class": "font-bold"
 }, " (no pending tasks) ")], -1
 /* HOISTED */
 );
 
-var _hoisted_34 = [_hoisted_33];
+var _hoisted_42 = [_hoisted_41];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -40737,35 +40767,67 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     title: "Soil Test"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeAuthenticatedLayout, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, _hoisted_6, _hoisted_7, !$props.taskToday ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.taskToday, function (task, index) {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_ctx.$page.props.flash.message ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.flash.message), 1
+      /* TEXT */
+      )]), _hoisted_7])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_8, _hoisted_9, _hoisted_10, $props.taskToday.length != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.taskToday, function (task, index) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
           key: index,
           "class": "bg-white border-b dark:bg-gray-800 dark:border-gray-900 text-center"
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.name), 1
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.name), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.field_name), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.field_name), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.deadline), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.deadline), 1
         /* TEXT */
-        ), _hoisted_15]);
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.status), 1
+        /* TEXT */
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+          onClick: function onClick($event) {
+            return $options.finishTask(task.id);
+          },
+          "class": "bg-transparent hover:bg-green-200 text-green-dark font-semibold hover:text-green-500 py-2 px-4 border border-green-400 hover:border-transparent rounded"
+        }, "Done", 8
+        /* PROPS */
+        , _hoisted_20), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+          onClick: function onClick($event) {
+            return $options.removeTask(task.id);
+          },
+          "class": "ml-3 bg-transparent hover:bg-red-200 text-green-dark font-semibold hover:text-red-500 py-2 px-4 border border-red-400 hover:border-transparent rounded"
+        }, "remove", 8
+        /* PROPS */
+        , _hoisted_21)])]);
       }), 128
       /* KEYED_FRAGMENT */
-      ))])])])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_16, _hoisted_18)), _hoisted_19, _hoisted_20, _hoisted_21, _hoisted_22, !$props.pendingTasks ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_25, [_hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.pendingTasks, function (task, index) {
+      ))])])])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_22, _hoisted_24)), _hoisted_25, _hoisted_26, _hoisted_27, _hoisted_28, $props.pendingTasks.length != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_31, [_hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.pendingTasks, function (task, index) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
           key: index,
           "class": "bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center"
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.name), 1
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.name), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.field_name), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.field_name), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.deadline), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.deadline), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.status), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.status), 1
         /* TEXT */
-        ), _hoisted_31]);
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+          onClick: function onClick($event) {
+            return $options.finishTask(task.id);
+          },
+          "class": "bg-transparent hover:bg-green-200 text-green-dark font-semibold hover:text-green-500 py-2 px-4 border border-green-400 hover:border-transparent rounded"
+        }, "Done", 8
+        /* PROPS */
+        , _hoisted_38), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+          onClick: function onClick($event) {
+            return $options.removeTask(task.id);
+          },
+          "class": "ml-3 bg-transparent hover:bg-red-200 text-green-dark font-semibold hover:text-red-500 py-2 px-4 border border-red-400 hover:border-transparent rounded"
+        }, "remove", 8
+        /* PROPS */
+        , _hoisted_39)])]);
       }), 128
       /* KEYED_FRAGMENT */
-      ))])])])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_32, _hoisted_34))])])])])];
+      ))])])])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_40, _hoisted_42))])])])])];
     }),
     _: 1
     /* STABLE */
@@ -40813,9 +40875,11 @@ var _hoisted_7 = {
   "class": "bg-green-100 text-green-700 p-4",
   role: "alert"
 };
-var _hoisted_8 = {
-  "class": "font-bold"
-};
+
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
 var _hoisted_9 = {
   "class": "inline-block relative w-64"
 };
@@ -40828,57 +40892,61 @@ var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 );
 
 var _hoisted_11 = {
+  key: 0,
+  value: "No fields available"
+};
+var _hoisted_12 = {
   "class": "inline-block relative w-64 ml-5"
 };
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "text-gray-700 text-sm font-bold mb-2",
   "for": "username"
 }, " Scheduled Date ", -1
 /* HOISTED */
 );
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_14 = {
+var _hoisted_15 = {
   "class": "flex justify-center"
 };
-var _hoisted_15 = {
+var _hoisted_16 = {
   "class": "mb-3 xl:w-96"
 };
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": "exampleFormControlTextarea1",
   "class": "font-bold form-label inline-block mb-2 text-gray-700"
 }, "Remarks", -1
 /* HOISTED */
 );
 
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Save ");
 
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "fa-solid fa-floppy-disk ml-1 text-white"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_20 = [_hoisted_18, _hoisted_19];
+var _hoisted_21 = [_hoisted_19, _hoisted_20];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_BreezeAuthenticatedLayout = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("BreezeAuthenticatedLayout");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_BreezeAuthenticatedLayout, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_ctx.$page.props.flash.message ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.flash.message), 1
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_ctx.$page.props.flash.message ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.flash.message), 1
       /* TEXT */
-      )])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+      )]), _hoisted_8])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
         "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-          return $setup.form.fieldName = $event;
+          return $data.fieldName = $event;
         }),
         "class": "block appearance-none w-full bg-white border border-green-400 hover:border-green-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline",
         required: ""
@@ -40890,11 +40958,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         );
       }), 128
       /* KEYED_FRAGMENT */
-      ))], 512
+      )), !$props.fields ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", _hoisted_11)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.form.fieldName]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.fieldName]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-          return $setup.form.scheduledDate = $event;
+          return $data.scheduledDate = $event;
         }),
         "class": "bg-gray-200 appearance-none border-2 border-green-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500",
         id: "inline-full-name",
@@ -40902,9 +40970,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         required: ""
       }, null, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.scheduledDate]])]), _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_hoisted_16, _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.scheduledDate]])]), _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
         "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-          return $setup.form.remarks = $event;
+          return $data.remarks = $event;
         }),
         "class": "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-900 bg-white bg-clip-padding border border-solid border-green-400 rounded transition ease-in-out m-0 focus:text-black focus:bg-white focus:border-green-500 focus:outline-none",
         id: "exampleFormControlTextarea1",
@@ -40912,13 +40980,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         placeholder: "(optional)"
       }, null, 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.remarks]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.remarks]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         type: "submit",
         onClick: _cache[3] || (_cache[3] = function ($event) {
-          return $setup.submit();
+          return $options.submit();
         }),
         "class": "inline-block ml-5 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-      }, _hoisted_20)])])])])])])];
+      }, _hoisted_21)])])])])])])];
     }),
     _: 1
     /* STABLE */
@@ -41292,16 +41360,16 @@ var _hoisted_2 = {
   "class": "max-w-7xl h-50 mx-auto sm:px-6 lg:px-8"
 };
 var _hoisted_3 = {
-  "class": "sm:rounded-lg"
+  "class": "sm:rounded-lg mb-12"
 };
 var _hoisted_4 = {
-  "class": "p-6"
+  "class": "max-w-full mx-auto"
 };
 var _hoisted_5 = {
-  "class": "w-full content-center items-center rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+  "class": "flex py-5 flex-col justify-center bg-white border rounded rounded-xl"
 };
 var _hoisted_6 = {
-  "class": "p-4 leading-normal"
+  "class": "flex flex-col px-5 bg-white border rounded rounded-xl p-12"
 };
 
 var _hoisted_7 = /*#__PURE__*/_withScopeId(function () {
@@ -41312,28 +41380,25 @@ var _hoisted_7 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_8 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1
-  /* HOISTED */
-  );
-});
-
+var _hoisted_8 = {
+  key: 0,
+  "class": "fa-solid fa-circle-check text-green-500"
+};
 var _hoisted_9 = {
-  "class": "grid grid-cols-4 gap-4"
+  key: 1,
+  "class": "fa-solid fa-circle-check text-green-500"
 };
 var _hoisted_10 = {
-  "class": "col-span-2"
+  key: 2,
+  "class": "fa-solid fa-circle-check text-green-500"
 };
 var _hoisted_11 = {
-  "class": "col-span-2"
-};
-var _hoisted_12 = {
   style: {
     "font-size": "13px"
   }
 };
 
-var _hoisted_13 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "font-bold"
   }, " NITROGEN ", -1
@@ -41341,13 +41406,73 @@ var _hoisted_13 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
+var _hoisted_13 = {
+  key: 0
+};
 var _hoisted_14 = {
+  key: 0,
+  "class": "text-red-500"
+};
+
+var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-plus text-red-500 ml-3"
+  }, null, -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_16 = {
+  key: 1,
+  "class": "text-green-500"
+};
+
+var _hoisted_17 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-plus text-green-500 ml-3"
+  }, null, -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_18 = {
+  key: 2,
+  "class": "text-gray-500"
+};
+
+var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-plus text-gray-500 ml-3"
+  }, null, -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_20 = {
+  key: 1,
+  style: {
+    "font-size": "14px"
+  }
+};
+var _hoisted_21 = {
+  "class": "ml-5"
+};
+
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" You need to add atleast ");
+
+var _hoisted_23 = {
+  "class": "font-bold"
+};
+
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/kg of nitrogen to get the ideal nutrient value for the soil ");
+
+var _hoisted_25 = {
   style: {
     "font-size": "13px"
   }
 };
 
-var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_26 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "font-bold"
   }, " PHOSPHORUS ", -1
@@ -41355,13 +41480,89 @@ var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_16 = {
+var _hoisted_27 = {
+  key: 0
+};
+var _hoisted_28 = {
+  key: 0,
+  "class": "text-red-500"
+};
+
+var _hoisted_29 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-plus text-red-500 ml-3"
+  }, null, -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_30 = {
+  key: 1,
+  "class": "text-green-500"
+};
+
+var _hoisted_31 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-plus text-green-500 ml-3"
+  }, null, -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_32 = {
+  key: 2,
+  "class": "text-gray-500"
+};
+
+var _hoisted_33 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-plus text-gray-500 ml-3"
+  }, null, -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_34 = {
+  key: 1,
+  "class": "fa-solid fa-circle-check text-green-500"
+};
+var _hoisted_35 = {
+  key: 2,
+  "class": "fa-solid fa-circle-check text-orange-500"
+};
+var _hoisted_36 = {
+  key: 3,
+  "class": "fa-solid fa-circle-check text-red-500"
+};
+var _hoisted_37 = {
+  key: 4,
+  "class": "fa-solid fa-circle-check text-red-500"
+};
+var _hoisted_38 = {
+  key: 5,
+  style: {
+    "font-size": "14px"
+  }
+};
+var _hoisted_39 = {
+  "class": "ml-5"
+};
+
+var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" You need to add atleast ");
+
+var _hoisted_41 = {
+  "class": "font-bold"
+};
+
+var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/kg of nitrogen to get the ideal nutrient value for the soil ");
+
+var _hoisted_43 = {
   style: {
     "font-size": "13px"
   }
 };
 
-var _hoisted_17 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_44 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "font-bold"
   }, " POTASSIUM ", -1
@@ -41369,13 +41570,89 @@ var _hoisted_17 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_18 = {
+var _hoisted_45 = {
+  key: 0
+};
+var _hoisted_46 = {
+  key: 0,
+  "class": "text-red-500"
+};
+
+var _hoisted_47 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-plus text-red-500 mx-3"
+  }, null, -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_48 = {
+  key: 1,
+  "class": "text-green-500"
+};
+
+var _hoisted_49 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-plus text-green-500 mx-3"
+  }, null, -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_50 = {
+  key: 2,
+  "class": "text-gray-500"
+};
+
+var _hoisted_51 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-plus text-gray-500 ml-3"
+  }, null, -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_52 = {
+  key: 1,
+  "class": "fa-solid fa-circle-check text-red-500"
+};
+var _hoisted_53 = {
+  key: 2,
+  "class": "fa-solid fa-circle-check text-orang-500"
+};
+var _hoisted_54 = {
+  key: 3,
+  "class": "fa-solid fa-circle-check text-green-500"
+};
+var _hoisted_55 = {
+  key: 4,
+  "class": "fa-solid fa-circle-check text-red-500"
+};
+var _hoisted_56 = {
+  key: 5,
+  style: {
+    "font-size": "14px"
+  }
+};
+var _hoisted_57 = {
+  "class": "ml-5"
+};
+
+var _hoisted_58 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" You need to add atleast ");
+
+var _hoisted_59 = {
+  "class": "font-bold"
+};
+
+var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/kg of nitrogen to get the ideal nutrient value for the soil ");
+
+var _hoisted_61 = {
   style: {
     "font-size": "13px"
   }
 };
 
-var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_62 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "font-bold"
   }, " MOISTURE LEVEL ", -1
@@ -41383,78 +41660,72 @@ var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_20 = {
+var _hoisted_63 = {
   key: 0
 };
+var _hoisted_64 = {
+  key: 0,
+  "class": "text-red-500"
+};
 
-var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
-    "class": "font-bold"
-  }, "Suggestions : ", -1
+var _hoisted_65 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-plus text-red-500 mx-3"
+  }, null, -1
   /* HOISTED */
   );
 });
 
-var _hoisted_22 = {
-  key: 0
-};
-var _hoisted_23 = {
-  "class": "ml-5"
+var _hoisted_66 = {
+  key: 1,
+  "class": "text-green-500"
 };
 
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" You need to add atleast ");
-
-var _hoisted_25 = {
-  "class": "font-bold"
-};
-
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/kg of nitrogen to get the ideal nutrient value for the soil ");
-
-var _hoisted_27 = {
-  key: 1
-};
-var _hoisted_28 = {
-  "class": "ml-5"
-};
-
-var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" You need to add atleast ");
-
-var _hoisted_30 = {
-  "class": "font-bold"
-};
-
-var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/kg of phosporus to get the ideal nutrient value for the soil ");
-
-var _hoisted_32 = {
-  key: 2
-};
-var _hoisted_33 = {
-  "class": "ml-5"
-};
-
-var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" You need to add atleast ");
-
-var _hoisted_35 = {
-  "class": "font-bold"
-};
-
-var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/kg of potassium to get the ideal nutrient value for the soil ");
-
-var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" `` ");
-
-var _hoisted_38 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_67 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-plus text-green-500 mx-3"
+  }, null, -1
   /* HOISTED */
   );
 });
 
-var _hoisted_39 = {
-  key: 0
+var _hoisted_68 = {
+  key: 2,
+  "class": "text-gray-500"
 };
 
-var _hoisted_40 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_69 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-plus text-gray-500 ml-3"
+  }, null, -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_70 = {
+  key: 1,
+  "class": "fa-solid fa-circle-check text-green-500"
+};
+var _hoisted_71 = {
+  key: 2,
+  "class": "fa-solid fa-circle-check text-orange-500"
+};
+var _hoisted_72 = {
+  key: 3,
+  "class": "fa-solid fa-circle-check text-red-500"
+};
+var _hoisted_73 = {
+  key: 4,
+  "class": "fa-solid fa-circle-check text-red-700"
+};
+var _hoisted_74 = {
+  key: 0,
+  "class": "mt-12"
+};
+
+var _hoisted_75 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
-    "class": "font-bold mb-3"
+    "class": "font-bold mb-5"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Previous Npk results "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fa-solid fa-chart-line ml-3 text-lg text-green-400"
   })], -1
@@ -41462,36 +41733,37 @@ var _hoisted_40 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_41 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1
-  /* HOISTED */
-  );
-});
+var _hoisted_76 = {
+  "class": "max-w-full mx-auto"
+};
+var _hoisted_77 = {
+  "class": "sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-2"
+};
+var _hoisted_78 = {
+  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-blue-500 border-4 rounded rounded-xl"
+};
+var _hoisted_79 = {
+  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-red-400 border-4 rounded rounded-xl"
+};
+var _hoisted_80 = {
+  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-gray-300 border-4 rounded rounded-xl"
+};
+var _hoisted_81 = {
+  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-blue-200 border-4 rounded rounded-xl"
+};
 
-var _hoisted_42 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_82 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
   /* HOISTED */
   );
 });
 
-var _hoisted_43 = {
-  "class": "max-w-full mx-auto"
-};
-var _hoisted_44 = {
-  "class": "sm:grid sm:h-24 sm:grid-flow-row sm:gap-12 sm:grid-cols-2"
-};
-var _hoisted_45 = {
-  "class": "flex flex-col bg-white justify-center px-4 py-4 border border-blue-300 border-4 rounded"
-};
-var _hoisted_46 = {
-  "class": "flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-orange-300 border-4 rounded sm:mt-0"
-};
-var _hoisted_47 = {
-  "class": "flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-gray-300 border-4 rounded sm:mt-0"
-};
-var _hoisted_48 = {
-  "class": "flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-green-300 border-4 rounded sm:mt-0"
-};
+var _hoisted_83 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+  /* HOISTED */
+  );
+});
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _this = this;
 
@@ -41504,81 +41776,80 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_BreezeAuthenticatedLayout, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.results, function (result, index) {
-        var _ref, _ref2, _ref4, _ref5;
+        var _ref;
 
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-          key: index
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calulateOverAllAssessment(result['nitrogen'].assesment, result['phosporus'].assesment, result['potassium'].assesment, result['moisture_level'].assesment)) + " ", 1
-        /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-          "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["fa-solid fa-circle-check", (_ref = {
-            'text-green-500': result['moisture_level'].assesment === 'VERY GOOD'
-          }, _defineProperty(_ref, "text-green-500", result['nitrogen'].assesment === 'HIGH'), _defineProperty(_ref, 'text-orange-500', result['moisture_level'].assesment === 'GOOD'), _defineProperty(_ref, 'text-red-500', result['moisture_level'].assesment === 'BAD'), _ref)])
-        }, null, 2
-        /* CLASS */
-        )]), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BarChart, {
+          key: index,
+          "class": "sm:grid sm:h-24 sm:grid-flow-row sm:gap-4 sm:grid-cols-2"
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BarChart, {
           "chart-data": _this.getChartData([result['nitrogen'].value, result['phosporus'].value, result['potassium'].value, result['moisture_level'].value])
         }, null, 8
         /* PROPS */
-        , ["chart-data"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(result['nitrogen'].assesment) + " ", 1
+        , ["chart-data"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getSummarySuggestion(result['nitrogen'].value, result['phosporus'].value, result['potassium'].value)) + " ", 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-          "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["fa-solid fa-circle-check", (_ref2 = {
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calulateOverAllAssessment(result['nitrogen'].assesment, result['phosporus'].assesment, result['potassium'].assesment, result['moisture_level'].assesment)) + " ", 1
+        /* TEXT */
+        ), _ctx.overAll == 'VERY GOOD' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_8)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.overAll == 'GOOD ' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_9)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.overAll == 'BAD' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_10)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(result['nitrogen'].assesment) + " ", 1
+        /* TEXT */
+        ), $props.prev ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_13, [$options.getPercentageChange(result['nitrogen'].value, $props.prev.nitrogen) < 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['nitrogen'].value, $props.prev.nitrogen)) + "% ", 1
+        /* TEXT */
+        )])) : $options.getPercentageChange(result['nitrogen'].value, $props.prev.nitrogen) > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['nitrogen'].value, $props.prev.nitrogen)) + "% ", 1
+        /* TEXT */
+        )])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['nitrogen'].value, $props.prev.nitrogen)) + "% ", 1
+        /* TEXT */
+        )]))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+          "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["fa-solid fa-circle-check", (_ref = {
             'text-green-500': result['nitrogen'].assesment === 'HIGH'
-          }, _defineProperty(_ref2, "text-green-500", result['nitrogen'].assesment === 'HIGH'), _defineProperty(_ref2, 'text-orange-500', result['nitrogen'].assesment === 'MEDIUM'), _defineProperty(_ref2, 'text-red-500', result['nitrogen'].assesment === 'LOW'), _ref2)])
+          }, _defineProperty(_ref, "text-green-500", result['nitrogen'].assesment === 'HIGH'), _defineProperty(_ref, 'text-orange-500', result['nitrogen'].assesment === 'MEDIUM'), _defineProperty(_ref, 'text-red-500', result['nitrogen'].assesment === 'LOW'), _defineProperty(_ref, "text-red-500", result['nitrogen'].assesment === 'EXCESSIVE'), _ref)])
         }, null, 2
         /* CLASS */
-        )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(result['phosporus'].assesment) + " ", 1
+        ), _ctx.summary.nitrogen > 0 && result['nitrogen'].assesment != 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_21, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.summary.nitrogen), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-          "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["fa-solid fa-circle-check", _defineProperty({
-            'text-green-500': result['phosporus'].assesment === 'HIGH',
-            'text-orange-500': result['phosporus'].assesment === 'MEDIUM',
-            'text-red-500': result['phosporus'].assesment === 'LOW'
-          }, "text-red-500", result['phosporus'].assesment === 'EXCESSIVE')])
-        }, null, 2
-        /* CLASS */
-        )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(result['potassium'].assesment) + " ", 1
+        ), _hoisted_24])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_25, [_hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(result['phosporus'].assesment) + " ", 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-          "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["fa-solid fa-circle-check", (_ref4 = {
-            'text-green-500': result['potassium'].assesment === 'HIGH'
-          }, _defineProperty(_ref4, "text-green-500", result['nitrogen'].assesment === 'HIGH'), _defineProperty(_ref4, 'text-orange-500', result['potassium'].assesment === 'MEDIUM'), _defineProperty(_ref4, 'text-red-500', result['potassium'].assesment === 'LOW' || result['potassium'].assesment === 'VERY LOW'), _ref4)])
-        }, null, 2
-        /* CLASS */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(result['moisture_level'].assesment) + " ", 1
+        ), $props.prev ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_27, [$options.getPercentageChange(result['phosporus'].value, $props.prev.phosporus) < 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_28, [_hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['phosporus'].value, $props.prev.phosporus)) + "% ", 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-          "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["fa-solid fa-circle-check", (_ref5 = {
-            'text-green-500': result['moisture_level'].assesment === 'VERY GOOD'
-          }, _defineProperty(_ref5, "text-green-500", result['nitrogen'].assesment === 'HIGH'), _defineProperty(_ref5, 'text-orange-500', result['moisture_level'].assesment === 'GOOD'), _defineProperty(_ref5, 'text-red-500', result['moisture_level'].assesment === 'BAD'), _ref5)])
-        }, null, 2
-        /* CLASS */
-        )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getSummarySuggestion(result['nitrogen'].value, result['phosporus'].value, result['potassium'].value)) + " ", 1
+        )])) : $options.getPercentageChange(result['phosporus'].value, $props.prev.phosporus) > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_30, [_hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['phosporus'].value, $props.prev.phosporus)) + "% ", 1
         /* TEXT */
-        ), _ctx.summary ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_20, [_hoisted_21, _ctx.summary.nitrogen > 0 && result['nitrogen'].assesment != 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.summary.nitrogen), 1
+        )])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_32, [_hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['phosporus'].value, $props.prev.phosporus)) + "% ", 1
         /* TEXT */
-        ), _hoisted_26])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.summary.phosporus > 0 && result['phosporus'].assesment != 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_28, [_hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.summary.phosporus), 1
+        )]))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['phosporus'].assesment == 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_34)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['phosporus'].assesment == 'MEDIUM' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_35)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['phosporus'].assesment == 'LOW' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_36)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['phosporus'].assesment == 'EXCESSIVE' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_37)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.summary.phosporus > 0 && result['phosporus'].assesment != 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_39, [_hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_41, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.summary.phosporus), 1
         /* TEXT */
-        ), _hoisted_31])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.summary.potassium > 0 && result['potassium'].assesment != 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_33, [_hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.summary.potassium), 1
+        ), _hoisted_42])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_43, [_hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(result['potassium'].assesment) + " ", 1
         /* TEXT */
-        ), _hoisted_36])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_37])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])]), _hoisted_38, $props.n ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_39, [_hoisted_40, _hoisted_41, _hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+        ), $props.prev ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_45, [$options.getPercentageChange(result['potassium'].value, $props.prev.potassium) < 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_46, [_hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['potassium'].value, $props.prev.potassium)) + "% ", 1
+        /* TEXT */
+        )])) : $options.getPercentageChange(result['potassium'].value, $props.prev.potassium) > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_48, [_hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['potassium'].value, $props.prev.potassium)) + "% ", 1
+        /* TEXT */
+        )])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_50, [_hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['potassium'].value, $props.prev.potassium)) + "% ", 1
+        /* TEXT */
+        )]))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['potassium'].assesment == 'LOW' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_52)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['potassium'].assesment == 'MEDIUM' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_53)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['potassium'].assesment == 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_54)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['potassium'].assesment == 'EXCESSIVE' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_55)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.summary.potassium > 0 && result['potassium'].assesment != 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_56, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_57, [_hoisted_58, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_59, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.summary.potassium), 1
+        /* TEXT */
+        ), _hoisted_60])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_61, [_hoisted_62, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(result['moisture_level'].assesment) + " ", 1
+        /* TEXT */
+        ), $props.prev ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_63, [$options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level) < 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_64, [_hoisted_65, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level)) + "% ", 1
+        /* TEXT */
+        )])) : $options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level) > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_66, [_hoisted_67, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level)) + "% ", 1
+        /* TEXT */
+        )])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_68, [_hoisted_69, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level)) + "% ", 1
+        /* TEXT */
+        )]))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['moisture_level'].assesment == 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_70)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['moisture_level'].assesment == 'MEDIUM' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_71)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['moisture_level'].assesment == 'LOW' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_72)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['moisture_level'].assesment == 'VERY HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_73)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), $props.n ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_74, [_hoisted_75, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_76, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_77, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_78, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
           chartData: _this.getLineChartData($props.n, $props.dates, 'nitrogen', '#93C5FD')
         }, null, 8
         /* PROPS */
-        , ["chartData"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+        , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_79, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
           chartData: _this.getLineChartData($props.p, $props.dates, 'phosphorus', '#FDBA74')
         }, null, 8
         /* PROPS */
-        , ["chartData"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+        , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_80, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
           chartData: _this.getLineChartData($props.k, $props.dates, 'potassium', '#D1D5DB')
         }, null, 8
         /* PROPS */
-        , ["chartData"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+        , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_81, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
           chartData: _this.getLineChartData($props.ml, $props.dates, 'moisture level', '#86EFAC')
         }, null, 8
         /* PROPS */
-        , ["chartData"])])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+        , ["chartData"])])]), _hoisted_82, _hoisted_83])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
       }), 128
       /* KEYED_FRAGMENT */
       ))])])])])];
@@ -41684,7 +41955,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(sample.moist_level) + " % ", 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(new Date(sample.created_at).toISOString().slice(0, 10)), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(new Date(sample.created_at).toDateString()), 1
     /* TEXT */
     )]);
   }), 128
@@ -41813,111 +42084,105 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
-  "class": "font-semibold text-xl text-gray-800 leading-tight"
-}, " Soil Testing Dashboard ", -1
-/* HOISTED */
-);
-
-var _hoisted_2 = {
+var _hoisted_1 = {
   "class": "py-12"
 };
-var _hoisted_3 = {
+var _hoisted_2 = {
   "class": "max-w-7xl mx-auto sm:px-6 lg:px-8"
 };
+var _hoisted_3 = {
+  "class": ""
+};
 var _hoisted_4 = {
-  "class": "bg-white overflow-hidden shadow-sm sm:rounded-lg"
-};
-var _hoisted_5 = {
-  "class": "p-6 bg-white border-b border-gray-200"
+  "class": "p-6"
 };
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Add New ");
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Add New ");
 
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "fa-solid fa-plus text-green-500 text-lg ml-3"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-  "class": "font-bold text-green-500"
-}, " Previous testing results ", -1
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "font-bold text-black"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+  "class": "fa-solid fa-clock-rotate-left text-green-500 mr-3"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Previous testing results ")], -1
 /* HOISTED */
 );
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", {
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", {
   "class": "mb-5"
 }, null, -1
 /* HOISTED */
 );
 
+var _hoisted_10 = {
+  key: 0
+};
 var _hoisted_11 = {
-  key: 0,
-  "class": "relative overflow-x-auto shadow-md sm:rounded-lg"
+  "class": "max-w-full mx-auto"
 };
 var _hoisted_12 = {
-  "class": "w-full text-sm text-left text-gray-500 dark:text-gray-400 text-center"
+  "class": "sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-1"
 };
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
-  "class": "text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-  "class": "px-4 py-2"
-}, "Name"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-  "class": "px-4 py-2"
-}, "Date"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-  "class": "px-4 py-2"
-})])], -1
-/* HOISTED */
-);
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Field Name : ");
 
 var _hoisted_14 = {
-  "class": "text-center"
+  "class": "font-bold"
 };
 var _hoisted_15 = {
-  "class": "px-4 py-2"
-};
-var _hoisted_16 = {
-  "class": "px-4 py-2"
-};
-var _hoisted_17 = {
-  "class": "px-4 py-2"
+  "class": "float-right"
 };
 
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" View Data ");
-
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-  "class": "fa-solid fa-eye ml-3 text-lg text-white"
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+  "class": "fa-solid fa-eye mr-3 text-lg text-white"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Start Testing ");
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" View Data ");
+
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Date : ");
+
+var _hoisted_19 = {
+  "class": "font-bold"
+};
+var _hoisted_20 = {
+  "class": "float-right"
+};
 
 var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
-  "class": "fa-solid fa-sun-plant-wilt ml-3 text-lg text-white"
+  "class": "fa-solid fa-sun-plant-wilt mr -3 text-lg text-white"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_22 = {
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Start Testing ");
+
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_24 = {
   key: 1,
   "class": "font-bold text-center"
 };
 
-var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
   "class": "font-bold"
 }, "No available tests")], -1
 /* HOISTED */
 );
 
-var _hoisted_24 = [_hoisted_23];
+var _hoisted_26 = [_hoisted_25];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -41928,62 +42193,59 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Head, {
     title: "Soil Testing Dashboard "
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeAuthenticatedLayout, null, {
-    header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_1];
-    }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
         href: _ctx.route('PerformTesting'),
         "class": "bg-transparent hover:bg-green-200 text-green-dark font-semibold hover:text-green-500 py-2 px-4 border border-green-400 hover:border-transparent rounded float-right"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_6, _hoisted_7];
+          return [_hoisted_5, _hoisted_6];
         }),
         _: 1
         /* STABLE */
 
       }, 8
       /* PROPS */
-      , ["href"])]), _hoisted_8, _hoisted_9, _hoisted_10, !$props.tests ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", _hoisted_14, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.tests, function (test, index) {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+      , ["href"])]), _hoisted_7, _hoisted_8, _hoisted_9, $props.tests.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.tests, function (test, index) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
           key: index,
-          "class": "bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center"
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(test.name), 1
+          "class": "mt-5 bg-green-100 flex py-5 flex-col justify-center px-5 py-12 border border-green-500 border-4 rounded rounded-xl"
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(test.name), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(new Date(test.created_at).toISOString().slice(0, 10)), 1
-        /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
           href: _ctx.route('view', {
             id: test.id
           }),
           "class": "float-right font-bold shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
         }, {
           "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-            return [_hoisted_18, _hoisted_19];
+            return [_hoisted_16, _hoisted_17];
           }),
           _: 2
           /* DYNAMIC */
 
         }, 1032
         /* PROPS, DYNAMIC_SLOTS */
-        , ["href"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+        , ["href"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(new Date(test.created_at).toDateString()), 1
+        /* TEXT */
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
           href: _ctx.route('updateTest', {
             id: test.id
           }),
-          "class": "mr-5 float-right font-bold shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+          "class": "mt-3 float-right font-bold shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
         }, {
           "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-            return [_hoisted_20, _hoisted_21];
+            return [_hoisted_21, _hoisted_22];
           }),
           _: 2
           /* DYNAMIC */
 
         }, 1032
         /* PROPS, DYNAMIC_SLOTS */
-        , ["href"])])]);
+        , ["href"])])])]);
       }), 128
       /* KEYED_FRAGMENT */
-      ))])])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_22, _hoisted_24))])])])])];
+      )), _hoisted_23])])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_24, _hoisted_26))])])])])];
     }),
     _: 1
     /* STABLE */
@@ -42023,22 +42285,42 @@ var _hoisted_3 = {
   "class": "p-6 bg-white"
 };
 var _hoisted_4 = {
+  "class": "mb-3 font-semibold text-xl text-gray-800 leading-tight"
+};
+
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Field Name : ");
+
+var _hoisted_6 = {
+  "class": "font-bold"
+};
+
+var _hoisted_7 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+    "class": "font-bold"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fa-solid fa-chart-line mr-3 text-green-500"
+  }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Npk Values Chart ")], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_8 = {
   "class": "max-w-full mx-auto bg-white"
 };
-var _hoisted_5 = {
-  "class": "bg-white sm:grid sm:h-24 sm:grid-flow-row sm:gap-6 sm:grid-cols-2"
-};
-var _hoisted_6 = {
-  "class": "flex flex-col bg-white justify-center px-4 py-4 border border-blue-300 border-4 rounded"
-};
-var _hoisted_7 = {
-  "class": "flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-orange-300 border-4 rounded sm:mt-0"
-};
-var _hoisted_8 = {
-  "class": "flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-gray-300 border-4 rounded sm:mt-0"
-};
 var _hoisted_9 = {
-  "class": "flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-green-300 border-4 rounded sm:mt-0"
+  "class": "sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-4"
+};
+var _hoisted_10 = {
+  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-blue-500 border-4 rounded rounded-xl"
+};
+var _hoisted_11 = {
+  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-red-500 border-4 rounded rounded-xl"
+};
+var _hoisted_12 = {
+  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-gray-500 border-4 rounded rounded-xl"
+};
+var _hoisted_13 = {
+  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-blue-200 border-4 rounded rounded-xl"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _this = this;
@@ -42049,23 +42331,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_BreezeAuthenticatedLayout, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.fieldName), 1
+      /* TEXT */
+      )]), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
         chartData: _this.getChartData($props.n, $props.dates, 'nitrogen', '#93C5FD')
       }, null, 8
       /* PROPS */
-      , ["chartData"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+      , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
         chartData: _this.getChartData($props.p, $props.dates, 'phosphorus', '#FDBA74')
       }, null, 8
       /* PROPS */
-      , ["chartData"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+      , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
         chartData: _this.getChartData($props.k, $props.dates, 'potassium', '#D1D5DB')
       }, null, 8
       /* PROPS */
-      , ["chartData"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+      , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
         chartData: _this.getChartData($props.ml, $props.dates, 'moisture level', '#86EFAC')
       }, null, 8
       /* PROPS */
-      , ["chartData"])])])])])])])])];
+      , ["chartData"])])])])])])])];
     }),
     _: 1
     /* STABLE */
@@ -42484,7 +42768,7 @@ var appName = ((_window$document$getE = window.document.getElementsByTagName('ti
   }
 });
 _inertiajs_progress__WEBPACK_IMPORTED_MODULE_2__.InertiaProgress.init({
-  color: '#4B5563'
+  color: '#1d9136'
 });
 
 /***/ }),

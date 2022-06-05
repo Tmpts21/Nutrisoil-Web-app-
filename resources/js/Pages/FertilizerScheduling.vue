@@ -5,12 +5,12 @@
                 <div class=" overflow-hidden">
                     <div class="p-6">
                         <div class="text-center ">
-
-                                <div v-if="$page.props.flash.message" class="alert">
-                                    <div class="bg-green-100 text-green-700 p-4" role="alert">
-                                        <p class="font-bold">{{ $page.props.flash.message }}</p>
-                                    </div>
+                            <div v-if="$page.props.flash.message" class="alert">
+                                <div class="bg-green-100 text-green-700 p-4" role="alert">
+                                    <p>{{ $page.props.flash.message }}</p>
                                 </div>
+                                <br>
+                            </div>
 
                             <form>
 
@@ -18,16 +18,17 @@
                                  <label class=" text-green-700 text-sm font-bold mb-2" for="username">
                                     Field Name
                                 </label>
-                            <select v-model="form.fieldName" class="block appearance-none w-full bg-white border border-green-400 hover:border-green-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" required>
+                            <select v-model="fieldName" class="block appearance-none w-full bg-white border border-green-400 hover:border-green-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" required>
                                 <option v-for="(field , index) in fields" :key="index"> {{field.name}} asd </option>
-                            </select>
+                                <option value="No fields available" v-if="!fields"></option>
+                           </select>
                         </div>
                         
                         <div class="inline-block relative w-64 ml-5 ">
                                  <label class=" text-gray-700 text-sm font-bold mb-2" for="username">
                                     Scheduled Date
                                 </label>
-                               <input v-model="form.scheduledDate" class="bg-gray-200 appearance-none border-2 border-green-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500" id="inline-full-name" type="date" required>
+                               <input v-model="scheduledDate" class="bg-gray-200 appearance-none border-2 border-green-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500" id="inline-full-name" type="date" required>
                         </div>
 
                         <br>
@@ -37,7 +38,7 @@
                                     <label for="exampleFormControlTextarea1" class="font-bold form-label inline-block mb-2 text-gray-700"
                                     >Remarks</label
                                     >
-                                    <textarea v-model="form.remarks"
+                                    <textarea v-model="remarks"
                                     class="
                                         form-control
                                         block
@@ -76,30 +77,40 @@
 </BreezeAuthenticatedLayout>
 </template>
 
-<script>
-import { reactive } from 'vue'
-import { Inertia } from '@inertiajs/inertia'
+
+
+<script >
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
+import { Head } from '@inertiajs/inertia-vue3';
+import { Link } from '@inertiajs/inertia-vue3';
+import { Inertia } from '@inertiajs/inertia'
 
 export default {
-    props : ['fields'],
-    components : { 
-        BreezeAuthenticatedLayout
-    },
-  setup () {
-    const form = reactive({
-      fieldName: '',
-      scheduledDate: '',
-      remarks: '',
-    })
-
-    function submit() {
-      if(this.form.fieldName === '' || this.form.scheduledDate === '' ) return 
-      else Inertia.post('/task/save', form) ; 
+  props : ['fields'],
+  components : {
+      BreezeAuthenticatedLayout ,
+      Head ,
+      Link 
+  },
+  data () { 
+      return {
+        fieldName: '',
+        scheduledDate: '',
+        remarks: '',
+      }
+  } ,
+  created () { 
+  },
+  methods : { 
+    submit() {
+      if(this.fieldName === '' || this.scheduledDate === '' ) return 
+      else Inertia.post('/saveTask', {
+          fieldName : this.fieldName,
+          scheduledDate : this.scheduledDate,
+          remarks : this.remarks
+      }) ; 
     }
 
-    return { form, submit }
-  },
+  }
 }
-
 </script>

@@ -39,10 +39,10 @@ class TestService {
             else if ($phosporus > 100 )   $phos = "EXCESSIVE" ; 
 
             $moist = "" ;
-            if ( $moist_level <= 80 and $moist_level >=65  )  $moist= "VERY GOOD";
-            else if ( $moist_level >= 50 and $moist_level <=65  )  $moist= "GOOD";
-            else if ( $moist_level < 50  )  $moist= "BAD";
-            else  $moist = "EXCESSIVE";
+            if ( $moist_level <= 80 and $moist_level >=65  )  $moist= "HIGH";
+            else if ( $moist_level >= 50 and $moist_level <=65  )  $moist= "MEDIUM";
+            else if ( $moist_level < 50  )  $moist= "LOW";
+            else  $moist = "VERY HIGH";
 
             $nutrient_assesment["nitrogen"] = [
                 "assesment"  =>  $ni ,

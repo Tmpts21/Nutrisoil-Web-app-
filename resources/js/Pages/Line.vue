@@ -59,9 +59,10 @@ export default {
   data() {
     return {
       chartOptions: {
-        responsive: true
-      }
-    }
+        responsive: true ,
+          font: {size: 14 }
+        }
+    } 
   }
 }
 </script>

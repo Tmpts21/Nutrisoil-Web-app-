@@ -42,7 +42,7 @@
                                                         {{sample.moist_level}} %
                                                     </td>
                                                     <td class="px-6 py-4">
-                                                        {{new Date(sample.created_at).toISOString().slice(0, 10)}}
+                                                        {{new Date(sample.created_at).toDateString()}}
                                                     </td>
                                                 </tr>
                                             </tbody>
