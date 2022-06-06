@@ -1,6 +1,6 @@
 <template>
 <BreezeAuthenticatedLayout>
-        <div class="py-12 bg-white">
+        <div class="py-12">
             <div class="max-w-7xl h-50 mx-auto sm:px-6 lg:px-8">
                 <div class="sm:rounded-lg mb-12 ">
 
@@ -32,8 +32,8 @@
                                     )}}
 
                                         <i v-if="overAll == 'VERY GOOD'" class="fa-solid fa-circle-check text-green-500"></i>
-                                        <i v-if="overAll == 'GOOD '" class="fa-solid fa-circle-check text-green-500"></i>
-                                        <i v-if="overAll == 'BAD'" class="fa-solid fa-circle-check text-green-500"></i>
+                                        <i v-if="overAll == 'GOOD'" class="fa-solid fa-circle-check text-orange-500"></i>
+                                        <i v-if="overAll == 'BAD'" class="fa-solid fa-circle-check text-red-500"></i>
 
 
                            </h5>
@@ -45,28 +45,22 @@
                                     {{result['nitrogen'].assesment}}
                                     <span v-if="prev">
                                         <span v-if="getPercentageChange(result['nitrogen'].value , prev.nitrogen) < 0 " class="text-red-500">
-                                        <i class="fa-solid fa-plus text-red-500 ml-3" ></i>   {{getPercentageChange(result['nitrogen'].value , prev.nitrogen)}}%
+                                            {{getPercentageChange(result['nitrogen'].value , prev.nitrogen)}}%
                                         </span>
                                         <span v-else-if="getPercentageChange(result['nitrogen'].value , prev.nitrogen) >  0 " class="text-green-500">
                                             <i class="fa-solid fa-plus text-green-500 ml-3" ></i>  {{getPercentageChange(result['nitrogen'].value , prev.nitrogen)}}%
                                         </span>
                                         <span v-else class="text-gray-500">
-                                            <i class="fa-solid fa-plus text-gray-500 ml-3" ></i>  {{getPercentageChange(result['nitrogen'].value , prev.nitrogen)}}%
+                                            <i class="fa-solid fa-plus text-gray-500 ml-3" ></i>  {{getPercentageChange(result['nitrogen'].value , prev.nitrogen )}}%
                                         </span>
                                     </span>
-                           
-
-                                        <i class="fa-solid fa-circle-check" 
-                                            :class="{
-                                                'text-green-500': result['nitrogen'].assesment === 'HIGH',                                                                                                              'text-green-500': result['nitrogen'].assesment === 'HIGH', 
-                                                'text-orange-500': result['nitrogen'].assesment === 'MEDIUM', 
-                                                'text-red-500': result['nitrogen'].assesment === 'LOW', 
-                                                'text-red-500': result['nitrogen'].assesment === 'EXCESSIVE', 
 
 
-                                            }" >
-                                            
-                                        </i>
+                                        <i v-if="result['nitrogen'].assesment == 'HIGH'" class="fa-solid fa-circle-check text-green-500"></i>
+                                        <i v-if="result['nitrogen'].assesment == 'MEDIUM'" class="fa-solid fa-circle-check text-orange-500"></i>
+                                        <i v-if="result['nitrogen'].assesment == 'LOW'" class="fa-solid fa-circle-check text-red-500"></i>
+                                        <i v-if="result['nitrogen'].assesment == 'EXCESSIVE'" class="fa-solid fa-circle-check text-red-500"></i>
+
                                     <small v-if="summary.nitrogen > 0 && result['nitrogen'].assesment != 'HIGH'" style="font-size:14px" >
                                         <li class="ml-5">
                                             You need to add atleast <span class="font-bold">{{summary.nitrogen}}</span> ppm / mg/kg of nitrogen to get the ideal nutrient value for the soil
@@ -79,13 +73,13 @@
                                     <span v-if="prev">
 
                                     <span v-if="getPercentageChange(result['phosporus'].value , prev.phosporus) < 0 " class="text-red-500">
-                                       <i class="fa-solid fa-plus text-red-500 ml-3" ></i>   {{getPercentageChange(result['phosporus'].value , prev.phosporus)}}%
+                                        {{getPercentageChange(result['phosporus'].value , prev.phosporus)}}%
                                     </span>
                                     <span v-else-if="getPercentageChange(result['phosporus'].value , prev.phosporus) >  0 " class="text-green-500">
                                         <i class="fa-solid fa-plus text-green-500 ml-3" ></i>  {{getPercentageChange(result['phosporus'].value , prev.phosporus)}}%
                                     </span>
                                     <span v-else class="text-gray-500">
-                                        <i class="fa-solid fa-plus text-gray-500 ml-3" ></i>  {{getPercentageChange(result['phosporus'].value , prev.phosporus)}}%
+                                        <i class="fa-solid fa-plus text-gray-500 ml-3" ></i>  {{getPercentageChange(result['phosporus'].value , prev.phosporus  + 1 )}}%
                                     </span>
                                     </span>
 
@@ -110,10 +104,10 @@
                                         {{result['potassium'].assesment}}
                                     <span v-if="prev">
                                     <span v-if="getPercentageChange(result['potassium'].value , prev.potassium) < 0 " class="text-red-500">
-                                       <i class="fa-solid fa-plus text-red-500 mx-3" ></i>   {{getPercentageChange(result['potassium'].value , prev.potassium)}}%
+                                       {{getPercentageChange(result['potassium'].value , prev.potassium)}}%
                                     </span>
                                     <span v-else-if="getPercentageChange(result['potassium'].value , prev.potassium) >  0 " class="text-green-500">
-                                        <i class="fa-solid fa-plus text-green-500 mx-3" ></i>  {{getPercentageChange(result['potassium'].value , prev.potassium)}}%
+                                        <i class="fa-solid fa-plus text-green-500 ml-3" ></i>  {{getPercentageChange(result['potassium'].value , prev.potassium)}}%
                                     </span>
                                     <span v-else class="text-gray-500">
                                         <i class="fa-solid fa-plus text-gray-500 ml-3" ></i>  {{getPercentageChange(result['potassium'].value , prev.potassium)}}%
@@ -123,12 +117,12 @@
                                     <i v-if="result['potassium'].assesment == 'LOW'" class="fa-solid fa-circle-check text-red-500"></i>
                                     <i v-if="result['potassium'].assesment == 'MEDIUM'" class="fa-solid fa-circle-check text-orang-500"></i>
                                     <i v-if="result['potassium'].assesment == 'HIGH'" class="fa-solid fa-circle-check text-green-500"></i>
-                                    <i v-if="result['potassium'].assesment == 'EXCESSIVE'" class="fa-solid fa-circle-check text-red-500"></i>
+                                    <i v-if="result['potassium'].assesment == 'VERY LOW'" class="fa-solid fa-circle-check text-red-500"></i>
 
 
                                     <small v-if="summary.potassium > 0 && result['potassium'].assesment != 'HIGH'" style="font-size:14px" >
                                         <li class="ml-5">
-                                            You need to add atleast <span class="font-bold">{{summary.potassium}}</span> ppm / mg/kg of nitrogen to get the ideal nutrient value for the soil
+                                            You need to add atleast <span class="font-bold">{{summary.potassium}}</span> ppm / mg/kg of potassium to get the ideal nutrient value for the soil
                                         </li>
                                     </small>
                                 </small>
@@ -140,13 +134,13 @@
                                      <span v-if="prev">
 
                                         <span v-if="getPercentageChange(result['moisture_level'].value , prev.moist_level) < 0 " class="text-red-500">
-                                            <i class="fa-solid fa-plus text-red-500 mx-3" ></i>   {{getPercentageChange(result['moisture_level'].value , prev.moist_level)}}%
+                                          {{getPercentageChange(result['moisture_level'].value , prev.moist_level)}}%
                                         </span>
                                         <span v-else-if="getPercentageChange(result['moisture_level'].value , prev.moist_level) >  0 " class="text-green-500">
-                                            <i class="fa-solid fa-plus text-green-500 mx-3" ></i>  {{getPercentageChange(result['moisture_level'].value , prev.moist_level)}}%
+                                            <i class="fa-solid fa-plus text-green-500 ml-3" ></i>  {{getPercentageChange(result['moisture_level'].value , prev.moist_level)}}%
                                         </span>
                                         <span v-else class="text-gray-500">
-                                            <i class="fa-solid fa-plus text-gray-500 ml-3" ></i>  {{getPercentageChange(result['moisture_level'].value , prev.moist_level)}}%
+                                            <i class="fa-solid fa-plus text-gray-500 ml-3" ></i>  {{getPercentageChange(result['moisture_level'].value , prev.moist_level) }}%
                                         </span>
                                     </span>
                               
@@ -303,7 +297,7 @@ export default {
 
       },
         getPercentageChange(new_val , old_val) { 
-            return Math.round( ((new_val - old_val) / old_val) * 100 )
+            return Math.round(((old_val - new_val  ) / Math.abs(new_val)  )  * 100)
       }
   }
     

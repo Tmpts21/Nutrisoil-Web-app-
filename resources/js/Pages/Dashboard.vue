@@ -69,13 +69,13 @@ export default {
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <thead class="text-center text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                                                     <th scope="col" class="px-6 py-3 text-black">
-                                                        Name
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-3 text-black">
                                                         Field Name 
                                                     </th>
                                                     <th scope="col" class="px-6 py-3 text-black">
                                                         Scheduled Date
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3 text-black">
+                                                        remarks 
                                                     </th>
                                                     <th scope="col" class="px-6 py-3 text-black">
                                                         Status
@@ -87,15 +87,14 @@ export default {
                                             </thead>
                                             <tbody>
                                                 <tr v-for="(task , index) in taskToday " :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-900 text-center">
-                                                   
-                                                    <td class="font-bold py-2 text-black" >
-                                                        {{task.name}}
-                                                    </td>
                                                     <td class="font-bold py-2 text-black" >
                                                         {{task.field_name}}
                                                     </td>
                                                     <td class="font-bold py-2 text-black" >
                                                         {{task.deadline}}
+                                                    </td>
+                                                    <td class="font-bold py-2 text-black" >
+                                                        {{task.remarks}}
                                                     </td>
                                                     <td class="font-bold py-2 text-black" >
                                                         {{task.status}}
@@ -131,9 +130,6 @@ export default {
                                 <div class="relative overflow-x-auto shadow-lg sm:rounded-lg">
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <thead class="text-center text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-900 dark:text-gray-400">
-                                                   <th scope="col" class="px-6 py-3 text-black">
-                                                        Task
-                                                    </th>
                                                     <th scope="col" class="px-6 py-3 text-black">
                                                         Field Name 
                                                     </th>
@@ -142,6 +138,9 @@ export default {
                                                     </th>
                                                     <th scope="col" class="px-6 py-3 text-black">
                                                         Status
+                                                    </th>
+                                                     <th scope="col" class="px-6 py-3 text-black">
+                                                        remarks
                                                     </th>
                                                     <th scope="col" class="px-6 py-3 text-black">
                                                         Action
@@ -158,6 +157,9 @@ export default {
                                                     </td>
                                                     <td class="font-bold py-2 text-black" >
                                                         {{task.deadline}}
+                                                    </td>
+                                                    <td class="font-bold py-2 text-black" >
+                                                        {{task.remarks}}
                                                     </td>
                                                     <td class="font-bold py-2 text-black">
                                                         {{task.status}}
