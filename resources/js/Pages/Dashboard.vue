@@ -3,13 +3,15 @@ import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import { Head } from '@inertiajs/inertia-vue3';
 import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia'
+import FeaturesAndGuideline from '../Pages/FeatureAndGuidelines.vue'
 
 export default {
   props : ["weather" ,'taskToday' , 'pendingTasks'],
   components : {
       BreezeAuthenticatedLayout ,
       Head ,
-      Link 
+      Link  ,
+      FeaturesAndGuideline
   },
   data () { 
       return {
@@ -48,19 +50,19 @@ export default {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                           <div v-if="$page.props.flash.message" class="alert">
-                            <div class="bg-green-100 text-green-700 p-4" role="alert">
-                                <p>{{ $page.props.flash.message }}</p>
+                            <div class="bg-green-100 text-green-700 p-4 border-2 border-green-600 rounded-full " role="alert">
+                                <p class="font-bold">{{ $page.props.flash.message }}</p>
                             </div>
                             <br>
                         </div>
                         
 
-                        <h5 class="font-bold text-black">
+                        <h5 class="font-bold">
                             <i class="fa-solid fa-list-check mr-3 text-green-700"></i> Tasks 
                         </h5>
                         <br>
 
-                        <h5 class="font-bold ml-5 text-green-700">
+                        <h5 class="font-bold ml-5 text-black">
                             Today 
                         </h5>
                  
@@ -123,7 +125,7 @@ export default {
 
 
 
-                        <h5 class="font-bold text-green-700 ml-5 ">
+                        <h5 class="font-bold text-black ml-5 ">
                             Pending  
                         </h5>
                         <div v-if="pendingTasks.length != 0 " class="ml-3">
@@ -136,12 +138,13 @@ export default {
                                                     <th scope="col" class="px-6 py-3 text-black">
                                                         Scheduled Date
                                                     </th>
+                                                      <th scope="col" class="px-6 py-3 text-black">
+                                                        remarks
+                                                    </th>
                                                     <th scope="col" class="px-6 py-3 text-black">
                                                         Status
                                                     </th>
-                                                     <th scope="col" class="px-6 py-3 text-black">
-                                                        remarks
-                                                    </th>
+                                                   
                                                     <th scope="col" class="px-6 py-3 text-black">
                                                         Action
                                                     </th>
@@ -151,9 +154,6 @@ export default {
                                                 <tr v-for="(task , index) in pendingTasks " :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center">
                                                     <td class="font-bold py-2 text-black">
                                                         {{task.name}}
-                                                    </td>
-                                                    <td class="font-bold py-2 text-black" >
-                                                        {{task.field_name}}
                                                     </td>
                                                     <td class="font-bold py-2 text-black" >
                                                         {{task.deadline}}

@@ -27,10 +27,7 @@ class DashboardController extends Controller
 
         $pending_tasks = Task::all()->where('deadline' , '>' , date("Y-m-d"))->where('status' , 'pending');
 
-
         $weather = json_decode(file_get_contents("http://api.openweathermap.org/data/2.5/forecast?lat=14.3407&lon=120.9825&appid=d66d9d14005cb56a56c9bd5987eb9a8d&cnt=6"));
-
-    
 
         return Inertia::render('Dashboard' ,[
             'weather' => $weather ,
@@ -50,6 +47,11 @@ class DashboardController extends Controller
         return Inertia::render('WeatherDashboard' ,[
             'weather' => $weather ,
         ]); 
+    }
+
+
+    public function displayfeaturesAndGuidelines() { 
+        return Inertia::render('FeatureAndGuidelines'); 
     }
 
 }

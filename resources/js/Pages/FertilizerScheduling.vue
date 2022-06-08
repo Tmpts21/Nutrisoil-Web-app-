@@ -104,7 +104,8 @@ export default {
   methods : { 
     submit() {
       if(this.fieldName === '' || this.scheduledDate === '' ) return 
-      else Inertia.post('/saveTask', {
+      
+      Inertia.post('/saveTask', {
           fieldName : this.fieldName,
           scheduledDate : this.scheduledDate,
           remarks : this.remarks

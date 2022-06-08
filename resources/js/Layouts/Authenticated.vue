@@ -26,6 +26,8 @@ const showingNavigationDropdown = ref(false);
                             </div>
 
                             <!-- Navigation Links -->
+
+
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <BreezeNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                    <i class="mr-3 text-lg fa-solid fa-list-check text-green-600"></i>  Dashboard 
@@ -50,7 +52,16 @@ const showingNavigationDropdown = ref(false);
                                    <i class="fa-solid fa-cloud-moon-rain mr-3 text-lg text-green-600"></i>  Weather Dashboard
                                 </BreezeNavLink>
                             </div>
-              
+
+
+                            
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <BreezeNavLink :href="route('featuresAndGuidelines')" :active="route().current('featuresAndGuidelines')">
+                                  <i class="fa-brands fa-readme mr-3 text-green-500 text-lg"></i>  features And Guidelines 
+                                </BreezeNavLink>
+                            </div>
+
+                            
 
                         </div>
 
@@ -93,7 +104,9 @@ const showingNavigationDropdown = ref(false);
 
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
-                    <div class="pt-2 pb-3 space-y-1">
+             
+              
+                <div class="pt-2 pb-3 space-y-1">
                         <BreezeResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                          <i class="mr-3 text-lg fa-solid fa-list-check text-green-600"></i>    Dashboard
                         </BreezeResponsiveNavLink>
@@ -113,6 +126,12 @@ const showingNavigationDropdown = ref(false);
                     <div class="pt-2 pb-3 space-y-1">
                         <BreezeResponsiveNavLink :href="route('weatherDashboard')" :active="route().current('weatherDashboard')">
                         <i class="fa-solid fa-cloud-moon-rain mr-3 text-lg text-green-600"></i>    Weather Dashboard   
+                        </BreezeResponsiveNavLink>
+                    </div>
+
+                    <div class="pt-2 pb-3 space-y-1">
+                        <BreezeResponsiveNavLink :href="route('featuresAndGuidelines')" :active="route().current('featuresAndGuidelines')">
+                           <i class="fa-brands fa-readme mr-3 text-green-500 text-lg"></i>     features And Guidelines
                         </BreezeResponsiveNavLink>
                     </div>
 

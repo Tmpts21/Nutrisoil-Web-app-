@@ -34,14 +34,15 @@ Route::get('/', function () {
 
 Route::get('/PerformTesting', [TestController::class, 'index'])->middleware(['auth'])->name('PerformTesting');
 
-Route::post('/saveTest', [TestController::class, 'save'])->middleware(['auth'])->name('saveTest');
-
 Route::get('/results', [TestController::class, 'test'])->middleware(['auth']);
 
+Route::get('/soiltestdashboard', [TestController::class, 'getAllTests'])->middleware(['auth'])->name('soiltestdashboard');
 
 Route::get('/view/{id}', [TestController::class, 'show'])->middleware(['auth'])->name('view');
 
 Route::get('/updateTest/{id}', [TestController::class, 'update'])->middleware(['auth'])->name('updateTest');
+
+Route::post('/saveTest', [TestController::class, 'save'])->middleware(['auth'])->name('saveTest');
 
 
 
@@ -54,9 +55,12 @@ Route::post('/removeTask', [TaskController::class, 'removeTask'])->middleware(['
 
 Route::post('/finishTask', [TaskController::class, 'finishTask'])->middleware(['auth'])->name('removeTask');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/soiltestdashboard', [TestController::class, 'getAllTests'])->middleware(['auth'])->name('soiltestdashboard');
+
+
+Route::get('/featuresAndGuidelines', [DashboardController::class, 'displayfeaturesAndGuidelines'])->middleware(['auth', 'verified'])->name('featuresAndGuidelines');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/weatherDashboard', [DashboardController::class, 'weatherDashboard'])->middleware(['auth', 'verified'])->name('weatherDashboard');
 
