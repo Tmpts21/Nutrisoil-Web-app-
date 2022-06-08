@@ -38694,14 +38694,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_0__.Chart.register(chart_js__WEBPACK_IMPORTED_
     }
   },
   data: function data() {
-    return {
-      chartOptions: {
-        responsive: true,
-        font: {
-          size: 14
-        }
-      }
-    };
+    return {};
   }
 });
 
@@ -38955,7 +38948,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {},
-  created: function created() {},
+  created: function created() {
+    this.getSummarySuggestion(this.results[0]['nitrogen'].value, this.results[0]['phosporus'].value, this.results[0]['potassium'].value);
+  },
   methods: {
     getChartData: function getChartData(values) {
       var chartData = {
@@ -39015,7 +39010,7 @@ __webpack_require__.r(__webpack_exports__);
       this.summary = summary;
     },
     getPercentageChange: function getPercentageChange(new_val, old_val) {
-      return Math.round((old_val - new_val) / Math.abs(new_val) * 100);
+      return Math.round((new_val - old_val) / Math.abs(old_val) * 100);
     }
   }
 });
@@ -40635,13 +40630,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Bar = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Bar", true);
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Bar, {
-    "chart-options": _ctx.chartOptions,
     "chart-data": $props.chartData,
     width: $props.width,
     height: $props.height
   }, null, 8
   /* PROPS */
-  , ["chart-options", "chart-data", "width", "height"])]);
+  , ["chart-data", "width", "height"])]);
 }
 
 /***/ }),
@@ -40691,7 +40685,7 @@ var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "font-bold"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "fa-solid fa-list-check mr-3 text-green-700"
-}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Tasks ")], -1
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Fertilizer Schedule ")], -1
 /* HOISTED */
 );
 
@@ -41230,7 +41224,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Line = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Line", true);
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Line, {
-    "chart-options": $data.chartOptions,
     "chart-data": $props.chartData,
     "chart-id": $props.chartId,
     width: $props.width,
@@ -41238,7 +41231,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "css-classes": $props.cssClasses
   }, null, 8
   /* PROPS */
-  , ["chart-options", "chart-data", "chart-id", "width", "height", "css-classes"]);
+  , ["chart-data", "chart-id", "width", "height", "css-classes"]);
 }
 
 /***/ }),
@@ -41850,13 +41843,26 @@ var _hoisted_60 = {
 
 var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/kg of potassium to get the ideal nutrient value for the soil ");
 
-var _hoisted_62 = {
-  style: {
-    "font-size": "13px"
-  }
-};
+var _hoisted_62 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+  /* HOISTED */
+  );
+});
 
 var _hoisted_63 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_64 = {
+  style: {
+    "font-size": "13px"
+  },
+  "class": "mt-5"
+};
+
+var _hoisted_65 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "font-bold"
   }, " MOISTURE LEVEL ", -1
@@ -41864,19 +41870,22 @@ var _hoisted_63 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_64 = {
+var _hoisted_66 = {
+  "class": "font-bold"
+};
+var _hoisted_67 = {
   key: 0
 };
-var _hoisted_65 = {
+var _hoisted_68 = {
   key: 0,
   "class": "text-red-500"
 };
-var _hoisted_66 = {
+var _hoisted_69 = {
   key: 1,
   "class": "text-green-500"
 };
 
-var _hoisted_67 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_70 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fa-solid fa-plus text-green-500 ml-3"
   }, null, -1
@@ -41884,12 +41893,12 @@ var _hoisted_67 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_68 = {
+var _hoisted_71 = {
   key: 2,
   "class": "text-gray-500"
 };
 
-var _hoisted_69 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_72 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fa-solid fa-plus text-gray-500 ml-3"
   }, null, -1
@@ -41897,28 +41906,28 @@ var _hoisted_69 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_70 = {
+var _hoisted_73 = {
   key: 1,
   "class": "fa-solid fa-circle-check text-green-500"
 };
-var _hoisted_71 = {
+var _hoisted_74 = {
   key: 2,
   "class": "fa-solid fa-circle-check text-orange-500"
 };
-var _hoisted_72 = {
+var _hoisted_75 = {
   key: 3,
   "class": "fa-solid fa-circle-check text-red-500"
 };
-var _hoisted_73 = {
+var _hoisted_76 = {
   key: 4,
   "class": "fa-solid fa-circle-check text-red-700"
 };
-var _hoisted_74 = {
+var _hoisted_77 = {
   key: 0,
   "class": "mt-12"
 };
 
-var _hoisted_75 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_78 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
     "class": "font-bold mb-5"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Previous Npk results "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
@@ -41928,32 +41937,32 @@ var _hoisted_75 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_76 = {
+var _hoisted_79 = {
   "class": "max-w-full mx-auto"
 };
-var _hoisted_77 = {
-  "class": "sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-2"
-};
-var _hoisted_78 = {
-  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-blue-500 border-4 rounded rounded-xl"
-};
-var _hoisted_79 = {
-  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-red-400 border-4 rounded rounded-xl"
-};
 var _hoisted_80 = {
-  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-gray-300 border-4 rounded rounded-xl"
+  "class": "sm:grid sm:h-32 sm:grid-flow-row"
 };
 var _hoisted_81 = {
+  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-blue-500 border-4 rounded rounded-xl"
+};
+var _hoisted_82 = {
+  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-red-400 border-4 rounded rounded-xl"
+};
+var _hoisted_83 = {
+  "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-gray-300 border-4 rounded rounded-xl"
+};
+var _hoisted_84 = {
   "class": "mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-blue-200 border-4 rounded rounded-xl"
 };
 
-var _hoisted_82 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_85 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
   /* HOISTED */
   );
 });
 
-var _hoisted_83 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_86 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
   /* HOISTED */
   );
@@ -41978,9 +41987,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "chart-data": _this.getChartData([result['nitrogen'].value, result['phosporus'].value, result['potassium'].value, result['moisture_level'].value])
         }, null, 8
         /* PROPS */
-        , ["chart-data"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getSummarySuggestion(result['nitrogen'].value, result['phosporus'].value, result['potassium'].value)) + " ", 1
-        /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calulateOverAllAssessment(result['nitrogen'].assesment, result['phosporus'].assesment, result['potassium'].assesment, result['moisture_level'].assesment)) + " ", 1
+        , ["chart-data"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calulateOverAllAssessment(result['nitrogen'].assesment, result['phosporus'].assesment, result['potassium'].assesment, result['moisture_level'].assesment)) + " ", 1
         /* TEXT */
         ), _ctx.overAll == 'VERY GOOD' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_8)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.overAll == 'GOOD' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_9)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.overAll == 'BAD' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_10)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(result['nitrogen'].assesment) + " ", 1
         /* TEXT */
@@ -41998,7 +42005,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* TEXT */
         )) : $options.getPercentageChange(result['phosporus'].value, $props.prev.phosporus) > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_32, [_hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['phosporus'].value, $props.prev.phosporus)) + "% ", 1
         /* TEXT */
-        )])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_34, [_hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['phosporus'].value, $props.prev.phosporus + 1)) + "% ", 1
+        )])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_34, [_hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['phosporus'].value, $props.prev.phosporus)) + "% ", 1
         /* TEXT */
         )]))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['phosporus'].assesment == 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_36)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['phosporus'].assesment == 'MEDIUM' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_37)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['phosporus'].assesment == 'LOW' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_38)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['phosporus'].assesment == 'EXCESSIVE' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_39)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.summary.phosporus > 0 && result['phosporus'].assesment != 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_41, [_hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.summary.phosporus), 1
         /* TEXT */
@@ -42012,31 +42019,33 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* TEXT */
         )]))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['potassium'].assesment == 'LOW' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_53)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['potassium'].assesment == 'MEDIUM' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_54)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['potassium'].assesment == 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_55)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['potassium'].assesment == 'VERY LOW' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_56)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.summary.potassium > 0 && result['potassium'].assesment != 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_58, [_hoisted_59, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_60, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.summary.potassium), 1
         /* TEXT */
-        ), _hoisted_61])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_62, [_hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(result['moisture_level'].assesment) + " ", 1
+        ), _hoisted_61])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_62, _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_64, [_hoisted_65, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(result['moisture_level'].assesment) + " - ", 1
         /* TEXT */
-        ), $props.prev ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_64, [$options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level) < 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_65, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level)) + "% ", 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_66, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(result['moisture_level'].value) + "%", 1
         /* TEXT */
-        )) : $options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level) > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_66, [_hoisted_67, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level)) + "% ", 1
+        ), $props.prev ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_67, [$options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level) < 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_68, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level)) + "% ", 1
         /* TEXT */
-        )])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_68, [_hoisted_69, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level)) + "% ", 1
+        )) : $options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level) > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_69, [_hoisted_70, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level)) + "% ", 1
         /* TEXT */
-        )]))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['moisture_level'].assesment == 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_70)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['moisture_level'].assesment == 'MEDIUM' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_71)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['moisture_level'].assesment == 'LOW' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_72)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['moisture_level'].assesment == 'VERY HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_73)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), $props.n ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_74, [_hoisted_75, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_76, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_77, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_78, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+        )])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_71, [_hoisted_72, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPercentageChange(result['moisture_level'].value, $props.prev.moist_level)) + "% ", 1
+        /* TEXT */
+        )]))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['moisture_level'].assesment == 'HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_73)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['moisture_level'].assesment == 'MEDIUM' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_74)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['moisture_level'].assesment == 'LOW' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_75)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), result['moisture_level'].assesment == 'VERY HIGH' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", _hoisted_76)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), $props.n ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_77, [_hoisted_78, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_79, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_80, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_81, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
           chartData: _this.getLineChartData($props.n, $props.dates, 'nitrogen', '#93C5FD')
         }, null, 8
         /* PROPS */
-        , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_79, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+        , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_82, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
           chartData: _this.getLineChartData($props.p, $props.dates, 'phosphorus', '#FDBA74')
         }, null, 8
         /* PROPS */
-        , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_80, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+        , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_83, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
           chartData: _this.getLineChartData($props.k, $props.dates, 'potassium', '#D1D5DB')
         }, null, 8
         /* PROPS */
-        , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_81, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+        , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_84, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
           chartData: _this.getLineChartData($props.ml, $props.dates, 'moisture level', '#86EFAC')
         }, null, 8
         /* PROPS */
-        , ["chartData"])])]), _hoisted_82, _hoisted_83])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+        , ["chartData"])])]), _hoisted_85, _hoisted_86])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
       }), 128
       /* KEYED_FRAGMENT */
       ))])])])])];

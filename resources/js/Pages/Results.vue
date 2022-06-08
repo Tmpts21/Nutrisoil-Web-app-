@@ -16,12 +16,6 @@
                     </div>
                     
             <div class="flex flex-col px-5 bg-white border rounded rounded-xl p-12">
-                                {{getSummarySuggestion(   
-                                            result['nitrogen'].value,
-                                            result['phosporus'].value,
-                                            result['potassium'].value
-                                )}}
-
                     <h5>
                       <span class="font-bold"> Assessment : </span>   
                                 {{calulateOverAllAssessment(
@@ -79,7 +73,7 @@
                                         <i class="fa-solid fa-plus text-green-500 ml-3" ></i>  {{getPercentageChange(result['phosporus'].value , prev.phosporus)}}%
                                     </span>
                                     <span v-else class="text-gray-500">
-                                        <i class="fa-solid fa-plus text-gray-500 ml-3" ></i>  {{getPercentageChange(result['phosporus'].value , prev.phosporus  + 1 )}}%
+                                        <i class="fa-solid fa-plus text-gray-500 ml-3" ></i>  {{getPercentageChange(result['phosporus'].value , prev.phosporus )}}%
                                     </span>
                                     </span>
 
@@ -119,7 +113,6 @@
                                     <i v-if="result['potassium'].assesment == 'HIGH'" class="fa-solid fa-circle-check text-green-500"></i>
                                     <i v-if="result['potassium'].assesment == 'VERY LOW'" class="fa-solid fa-circle-check text-red-500"></i>
 
-
                                     <small v-if="summary.potassium > 0 && result['potassium'].assesment != 'HIGH'" style="font-size:14px" >
                                         <li class="ml-5">
                                             You need to add atleast <span class="font-bold">{{summary.potassium}}</span> ppm / mg/kg of potassium to get the ideal nutrient value for the soil
@@ -127,12 +120,12 @@
                                     </small>
                                 </small>
 
-
-                                <small style="font-size: 13px;">
+                            <br>
+                            <hr>
+                                <small style="font-size: 13px;" class="mt-5">
                                     <span class="font-bold"> MOISTURE LEVEL </span> :  
-                                        {{result['moisture_level'].assesment}}
+                                        {{result['moisture_level'].assesment}} - <span class="font-bold">{{result['moisture_level'].value}}%</span>
                                      <span v-if="prev">
-
                                         <span v-if="getPercentageChange(result['moisture_level'].value , prev.moist_level) < 0 " class="text-red-500">
                                           {{getPercentageChange(result['moisture_level'].value , prev.moist_level)}}%
                                         </span>
@@ -158,7 +151,7 @@
                                     Previous Npk results  <i class="fa-solid fa-chart-line ml-3 text-lg text-green-400"></i>
                                 </h5>
                                    <div class="max-w-full mx-auto">
-                                    <div class="sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-2">
+                                    <div class="sm:grid sm:h-32 sm:grid-flow-row">
                                           <div class="mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-blue-500 border-4 rounded rounded-xl">
                                                 <LineChart :chartData="this.getLineChartData(n , dates , 'nitrogen' , '#93C5FD')"></LineChart>
                                         </div>
@@ -217,7 +210,12 @@ export default {
   mounted() {
       
   },
-  created () {               
+  created () { 
+        this.getSummarySuggestion(   
+            this.results[0]['nitrogen'].value,
+            this.results[0]['phosporus'].value,
+            this.results[0]['potassium'].value
+        )
     },
 
   methods : { 
@@ -297,7 +295,7 @@ export default {
 
       },
         getPercentageChange(new_val , old_val) { 
-            return Math.round(((old_val - new_val  ) / Math.abs(new_val)  )  * 100)
+            return Math.round(((new_val - old_val  ) / Math.abs(old_val)  )  * 100)
       }
   }
     

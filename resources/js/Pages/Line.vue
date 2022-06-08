@@ -1,6 +1,5 @@
 <template>
   <Line
-    :chart-options="chartOptions"
     :chart-data="chartData"
     :chart-id="chartId"
     :width="width"
@@ -58,10 +57,7 @@ export default {
   },
   data() {
     return {
-      chartOptions: {
-        responsive: true ,
-          font: {size: 14 }
-        }
+
     } 
   }
 }
