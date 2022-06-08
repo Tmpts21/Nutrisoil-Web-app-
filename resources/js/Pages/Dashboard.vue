@@ -58,7 +58,7 @@ export default {
                         
 
                         <h5 class="font-bold">
-                            <i class="fa-solid fa-list-check mr-3 text-green-700"></i> Tasks 
+                            <i class="fa-solid fa-list-check mr-3 text-green-700"></i> Fertilizer Schedule  
                         </h5>
                         <br>
 
