@@ -53,7 +53,7 @@ Route::post('/saveTask', [TaskController::class, 'save'])->middleware(['auth'])-
 
 Route::post('/removeTask', [TaskController::class, 'removeTask'])->middleware(['auth'])->name('removeTask');
 
-Route::post('/finishTask', [TaskController::class, 'finishTask'])->middleware(['auth'])->name('removeTask');
+Route::post('/finishTask', [TaskController::class, 'finishTask'])->middleware(['auth'])->name('finishTask');
 
 
 
