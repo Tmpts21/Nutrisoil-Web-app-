@@ -57,7 +57,7 @@ const showingNavigationDropdown = ref(false);
                             
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <BreezeNavLink :href="route('featuresAndGuidelines')" :active="route().current('featuresAndGuidelines')">
-                                  <i class="fa-brands fa-readme mr-3 text-green-500 text-lg"></i>  features And Guidelines 
+                                  <i class="fa-brands fa-readme mr-3 text-green-500 text-lg"></i>  Features And Guidelines 
                                 </BreezeNavLink>
                             </div>
 
@@ -131,7 +131,7 @@ const showingNavigationDropdown = ref(false);
 
                     <div class="pt-2 pb-3 space-y-1">
                         <BreezeResponsiveNavLink :href="route('featuresAndGuidelines')" :active="route().current('featuresAndGuidelines')">
-                           <i class="fa-brands fa-readme mr-3 text-green-500 text-lg"></i>     features And Guidelines
+                           <i class="fa-brands fa-readme mr-3 text-green-500 text-lg"></i>     Features And Guidelines
                         </BreezeResponsiveNavLink>
                     </div>
 
