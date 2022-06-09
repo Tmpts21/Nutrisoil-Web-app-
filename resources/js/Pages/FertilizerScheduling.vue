@@ -19,7 +19,7 @@
                                     Field Name
                                 </label>
                             <select v-model="fieldName" class="block appearance-none w-full bg-white border border-green-400 hover:border-green-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" required>
-                                <option v-for="(field , index) in fields" :key="index"> {{field.name}} asd </option>
+                                <option v-for="(field , index) in fields" :key="index"> {{field.name}} </option>
                                 <option value="No fields available" v-if="!fields"></option>
                            </select>
                         </div>

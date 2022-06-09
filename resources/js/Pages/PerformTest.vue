@@ -25,11 +25,12 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <span>Note :
-                                                    <small>
-                                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, voluptatem reprehenderit suscipit quasi consectetur corporis numquam dolorem, molestiae eos nam officia, optio eligendi nihil architecto accusantium dolorum ea commodi laborum?
-                                                    </small>
-                                            </span>
+                                                <span>
+                                                 <a class="font-bold text-blue-500" href="https://drive.google.com/file/d/1Mfzb1JJ11KFzG9nZKMAfcL-8UhdZnl8Q/view?usp=sharing">Click here for step on how to collect soil sample for your field </a>   
+                                                </span>
+                                                <br>
+                                                <hr>
+                                                <br>
                                            </div>
 
                                             <div class="md:flex md:items-center">

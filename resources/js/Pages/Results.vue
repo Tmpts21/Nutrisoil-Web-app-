@@ -224,7 +224,7 @@ export default {
             labels: [ 'Nitrogen', 'Phosporus', 'Potassium'],
             datasets: [
                 {
-                    label: 'PPM Value',
+                    label: 'mg/L',
                     backgroundColor: [ '#03fce8' , '#b5b0aa' , '#ed9734'],
                     data : values
                 }

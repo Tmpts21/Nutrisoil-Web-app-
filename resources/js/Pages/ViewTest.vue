@@ -11,19 +11,19 @@
                              <div class="max-w-full mx-auto">
                                     <div class="sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-4">
                                           <div class="mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-blue-500 border-4 rounded rounded-xl">
-                                                <LineChart :chartData="this.getChartData(n , dates , 'nitrogen (ppm)' , '#93C5FD')"></LineChart>
+                                                <LineChart :chartData="this.getChartData(n , dates , 'nitrogen (mg/L)' , '#93C5FD')"></LineChart>
                                         </div>
                             
                                           <div class="mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-red-500 border-4 rounded rounded-xl">
-                                                <LineChart :chartData="this.getChartData(p , dates , 'phosphorus (ppm)' ,'#FDBA74')"></LineChart>
+                                                <LineChart :chartData="this.getChartData(p , dates , 'phosphorus (mg/L)' ,'#FDBA74')"></LineChart>
                                         </div>
 
                                           <div class="mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-gray-500 border-4 rounded rounded-xl">
-                                                <LineChart :chartData="this.getChartData(k , dates , 'potassium (ppm) ' ,'#D1D5DB')"></LineChart>
+                                                <LineChart :chartData="this.getChartData(k , dates , 'potassium (mg/L) ' ,'#D1D5DB')"></LineChart>
                                         </div>
                                         
                                           <div class="mt-5 bg-white-200 flex py-5 flex-col justify-center px-5 py-12 bg-white border border-blue-200 border-4 rounded rounded-xl">
-                                                <LineChart :chartData="this.getChartData(ml , dates , 'moisture level' ,'#86EFAC')"></LineChart>
+                                                <LineChart :chartData="this.getChartData(ml , dates , 'moisture level (%)' ,'#86EFAC')"></LineChart>
                                         </div>
                                     </div>
                                 </div>

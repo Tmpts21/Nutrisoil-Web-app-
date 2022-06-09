@@ -726,11 +726,11 @@ select {
 .mb-12 {
   margin-bottom: 3rem;
 }
-.mt-12 {
-  margin-top: 3rem;
-}
 .mt-5 {
   margin-top: 1.25rem;
+}
+.mt-12 {
+  margin-top: 3rem;
 }
 .mb-0 {
   margin-bottom: 0px;
@@ -1343,6 +1343,10 @@ select {
 .text-green-400 {
   --tw-text-opacity: 1;
   color: rgb(74 222 128 / var(--tw-text-opacity));
+}
+.text-blue-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity));
 }
 .underline {
   -webkit-text-decoration-line: underline;
