@@ -50,24 +50,37 @@
 
                                 <Transition>
                                     
-                                    <div v-if="test.start">
+                                    <div v-if="test.start && test.displayNpk == true ">
                                             <small class="text-gray-500"> Sample {{test.currentCount}} of {{test.sampleCount}}</small>
                                             <TestDashboard :sensorData="sensorData"></TestDashboard>
-                                    </div>
+                                           
+                                            <button @click="nextSample()" class="mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                                              Continue
+                                            </button>
+                                            <br>
+                                  </div>
                                 </Transition>
+
                                 <Transition>
+                                    <div v-if="test.displayMoisture === true">
+                                        <div class="max-w-full px-4 py-4 mx-auto">
+                                            <div class="sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-1">
+                                                <div class="flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-green-300 border-4 rounded sm:mt-0 rounded-full ">
+                                                    <div>
+                                                        <p class="text-3xl font-semibold text-center text-gray-800">{{this.sensorData.moisture }}% </p>
+                                                        <p class="text-lg text-center text-gray-500">Moisture Level</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                <div v-if="test.start" class="mb-5">
-
-                                    
-                                     <button v-if="this.test.currentCount == this.test.sampleCount" @click="processAndSaveData()" class="mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"> 
-                                               Save and Continue 
-                                     </button>
-                                     <button v-else @click="nextSample()" class="mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
-                                              Save and Continue to next sample
-                                     </button>
-                                </div>
+                                        <button @click="processAndSaveData()" class="mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"> 
+                                                Process and save
+                                        </button>
+                                  </div>
                                 </Transition>
+
+
 
                         
                                 <Transition>
@@ -130,9 +143,12 @@ export default {
         title : "",
         currentCount: 1 ,
         start : false , 
-        sampleNutrients : []
+        sampleNutrients : [] ,
+        displayMoisture : false ,
+        displayNpk : true
       },
-      sensorData : null 
+      sensorData : null ,
+      temp : {} 
   }),
   mounted() {
       // local storage here 
@@ -153,22 +169,15 @@ export default {
 
         // continue to next sample 
         nextSample() {
-            this.loading = true ; 
-            this.test.start = false
-            this.showSampleDatas = false
-            this.saveSensorData()
-            setTimeout(() => {
-                    this.loading = false  ; 
-                    this.test.start = true 
-                    this.test.currentCount += 1 
-                    this.showSampleDatas = true 
-            }, 1000)
+            this.test.displayNpk = false  
+            this.test.displayMoisture = true 
+            this.saveSensorData() 
         },
         
         //save and process data to the backend 
         processAndSaveData() { 
-            // instead calling @saveSensorData manually add the last item to the array. IDK if I use the @saveSensordata function it is always offset by one. IDK if this is a bug in inertia or in my code 
-            this.test.sampleNutrients.push(this.sensorData);
+            // instead calling @saveSensorData manually add the last item to the array. IDK if I use the @saveSensordata function it is always offset by one. IDK if this is a bug in inertia or in my code             
+            this.saveMoistureData()
             Inertia.post('/saveTest', { 
                 samples: this.test.sampleNutrients,
                 title : this.test.title
@@ -184,11 +193,21 @@ export default {
 
         // Save sensor data in local storage and variable "test.sampleNutrients"
         saveSensorData() { 
-            console.log('hit')
             const dbRef = ref(getDatabase());
             get(child(dbRef, 'data'))
-                .then((snapshot) => {
-                    if (snapshot.exists()) { this.test.sampleNutrients.push(snapshot.val()) }
+                .then((snapshot) => {if (snapshot.exists()) {
+                    this.test.sampleNutrients.push(this.sensorData);
+                }
+                    else { console.log("No data available") }
+                }).catch((error) => { console.error(error)  });
+        },
+
+        saveMoistureData() { 
+            const dbRef = ref(getDatabase());
+            get(child(dbRef, 'data'))
+                .then((snapshot) => {if (snapshot.exists()) {
+                    this.test.sampleNutrients[0].moisture = snapshot.val().moisture;
+                }
                     else { console.log("No data available") }
                 }).catch((error) => { console.error(error)  });
         },

@@ -38755,9 +38755,12 @@ var app = (0,firebase_app__WEBPACK_IMPORTED_MODULE_1__.initializeApp)(firebaseCo
         title: "",
         currentCount: 1,
         start: false,
-        sampleNutrients: []
+        sampleNutrients: [],
+        displayMoisture: false,
+        displayNpk: true
       },
-      sensorData: null
+      sensorData: null,
+      temp: {}
     };
   },
   mounted: function mounted() {// local storage here 
@@ -38774,23 +38777,14 @@ var app = (0,firebase_app__WEBPACK_IMPORTED_MODULE_1__.initializeApp)(firebaseCo
     },
     // continue to next sample 
     nextSample: function nextSample() {
-      var _this = this;
-
-      this.loading = true;
-      this.test.start = false;
-      this.showSampleDatas = false;
+      this.test.displayNpk = false;
+      this.test.displayMoisture = true;
       this.saveSensorData();
-      setTimeout(function () {
-        _this.loading = false;
-        _this.test.start = true;
-        _this.test.currentCount += 1;
-        _this.showSampleDatas = true;
-      }, 1000);
     },
     //save and process data to the backend 
     processAndSaveData: function processAndSaveData() {
-      // instead calling @saveSensorData manually add the last item to the array. IDK if I use the @saveSensordata function it is always offset by one. IDK if this is a bug in inertia or in my code 
-      this.test.sampleNutrients.push(this.sensorData);
+      // instead calling @saveSensorData manually add the last item to the array. IDK if I use the @saveSensordata function it is always offset by one. IDK if this is a bug in inertia or in my code             
+      this.saveMoistureData();
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__.Inertia.post('/saveTest', {
         samples: this.test.sampleNutrients,
         title: this.test.title
@@ -38798,23 +38792,36 @@ var app = (0,firebase_app__WEBPACK_IMPORTED_MODULE_1__.initializeApp)(firebaseCo
     },
     // get sensor data from firebase. The "Data" is the name of the key inside the database 
     getSensorData: function getSensorData() {
-      var _this2 = this;
+      var _this = this;
 
       var db = (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.getDatabase)();
       var dataRef = (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.ref)(db, 'data');
       (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.onValue)(dataRef, function (snapshot) {
-        _this2.sensorData = snapshot.val();
+        _this.sensorData = snapshot.val();
       });
     },
     // Save sensor data in local storage and variable "test.sampleNutrients"
     saveSensorData: function saveSensorData() {
-      var _this3 = this;
+      var _this2 = this;
 
-      console.log('hit');
       var dbRef = (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.ref)((0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.getDatabase)());
       (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.get)((0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.child)(dbRef, 'data')).then(function (snapshot) {
         if (snapshot.exists()) {
-          _this3.test.sampleNutrients.push(snapshot.val());
+          _this2.test.sampleNutrients.push(_this2.sensorData);
+        } else {
+          console.log("No data available");
+        }
+      })["catch"](function (error) {
+        console.error(error);
+      });
+    },
+    saveMoistureData: function saveMoistureData() {
+      var _this3 = this;
+
+      var dbRef = (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.ref)((0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.getDatabase)());
+      (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.get)((0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.child)(dbRef, 'data')).then(function (snapshot) {
+        if (snapshot.exists()) {
+          _this3.test.sampleNutrients[0].moisture = snapshot.val().moisture;
         } else {
           console.log("No data available");
         }
@@ -38880,7 +38887,9 @@ var app = (0,firebase_app__WEBPACK_IMPORTED_MODULE_1__.initializeApp)(firebaseCo
         title: "",
         currentCount: 1,
         start: true,
-        npkResults: []
+        npkResults: [],
+        displayMoisture: false,
+        displayNpk: true
       },
       sensorData: {}
     };
@@ -38894,10 +38903,16 @@ var app = (0,firebase_app__WEBPACK_IMPORTED_MODULE_1__.initializeApp)(firebaseCo
     //save and process data to the backend 
     processAndSaveData: function processAndSaveData() {
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__.Inertia.post('/saveTest', {
-        samples: [this.sensorData],
+        samples: this.test.npkResults,
         title: this.test.title,
         test_id: this.test_id
       });
+    },
+    // continue to next sample 
+    nextSample: function nextSample() {
+      this.test.displayNpk = false;
+      this.test.displayMoisture = true;
+      this.saveSensorData();
     },
     // get sensor data from firebase. The "data" is the name of the key inside the database 
     getSensorData: function getSensorData() {
@@ -38907,6 +38922,34 @@ var app = (0,firebase_app__WEBPACK_IMPORTED_MODULE_1__.initializeApp)(firebaseCo
       var dataRef = (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.ref)(db, 'data');
       (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.onValue)(dataRef, function (snapshot) {
         _this.sensorData = snapshot.val();
+      });
+    },
+    saveSensorData: function saveSensorData() {
+      var _this2 = this;
+
+      var dbRef = (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.ref)((0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.getDatabase)());
+      (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.get)((0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.child)(dbRef, 'data')).then(function (snapshot) {
+        if (snapshot.exists()) {
+          _this2.test.npkResults.push(_this2.sensorData);
+        } else {
+          console.log("No data available");
+        }
+      })["catch"](function (error) {
+        console.error(error);
+      });
+    },
+    saveMoistureData: function saveMoistureData() {
+      var _this3 = this;
+
+      var dbRef = (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.ref)((0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.getDatabase)());
+      (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.get)((0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.child)(dbRef, 'data')).then(function (snapshot) {
+        if (snapshot.exists()) {
+          _this3.test.npkResults[0].moisture = snapshot.val().moisture;
+        } else {
+          console.log("No data available");
+        }
+      })["catch"](function (error) {
+        console.error(error);
       });
     }
   }
@@ -41331,11 +41374,38 @@ var _hoisted_19 = {
 var _hoisted_20 = {
   "class": "text-gray-500"
 };
-var _hoisted_21 = {
-  key: 0,
-  "class": "mb-5"
-};
+
+var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+  /* HOISTED */
+  );
+});
+
 var _hoisted_22 = {
+  key: 0
+};
+var _hoisted_23 = {
+  "class": "max-w-full px-4 py-4 mx-auto"
+};
+var _hoisted_24 = {
+  "class": "sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-1"
+};
+var _hoisted_25 = {
+  "class": "flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-green-300 border-4 rounded sm:mt-0 rounded-full"
+};
+var _hoisted_26 = {
+  "class": "text-3xl font-semibold text-center text-gray-800"
+};
+
+var _hoisted_27 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "text-lg text-center text-gray-500"
+  }, "Moisture Level", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_28 = {
   key: 0
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -41373,41 +41443,41 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
       })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, null, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_ctx.test.start ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_20, " Sample " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.test.currentCount) + " of " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.test.sampleCount), 1
+          return [_ctx.test.start && _ctx.test.displayNpk == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_20, " Sample " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.test.currentCount) + " of " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.test.sampleCount), 1
           /* TEXT */
           ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TestDashboard, {
             sensorData: _ctx.sensorData
           }, null, 8
           /* PROPS */
-          , ["sensorData"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
-        }),
-        _: 1
-        /* STABLE */
-
-      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, null, {
-        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_ctx.test.start ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, [_this.test.currentCount == _this.test.sampleCount ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-            key: 0,
+          , ["sensorData"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
             onClick: _cache[2] || (_cache[2] = function ($event) {
-              return $options.processAndSaveData();
-            }),
-            "class": "mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded",
-            type: "button"
-          }, " Save and Continue ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-            key: 1,
-            onClick: _cache[3] || (_cache[3] = function ($event) {
               return $options.nextSample();
             }),
             "class": "mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded",
             type: "button"
-          }, " Save and Continue to next sample "))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+          }, " Continue "), _hoisted_21])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
         }),
         _: 1
         /* STABLE */
 
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, null, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_ctx.showSampleDatas ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Samples, {
+          return [_ctx.test.displayMoisture === true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.sensorData.moisture) + "% ", 1
+          /* TEXT */
+          ), _hoisted_27])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+            onClick: _cache[3] || (_cache[3] = function ($event) {
+              return $options.processAndSaveData();
+            }),
+            "class": "mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded",
+            type: "button"
+          }, " Process and save ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+        }),
+        _: 1
+        /* STABLE */
+
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, null, {
+        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [_ctx.showSampleDatas ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Samples, {
             sampleDatas: _this.test.sampleNutrients
           }, null, 8
           /* PROPS */
@@ -41466,10 +41536,30 @@ var _hoisted_7 = {
   "class": "text-gray-500"
 };
 var _hoisted_8 = {
-  key: 0,
-  "class": "mb-5"
+  key: 0
 };
 var _hoisted_9 = {
+  "class": "max-w-full px-4 py-4 mx-auto"
+};
+var _hoisted_10 = {
+  "class": "sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-1"
+};
+var _hoisted_11 = {
+  "class": "flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-green-300 border-4 rounded sm:mt-0 rounded-full"
+};
+var _hoisted_12 = {
+  "class": "text-3xl font-semibold text-center text-gray-800"
+};
+
+var _hoisted_13 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "text-lg text-center text-gray-500"
+  }, "Moisture Level", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_14 = {
   key: 0
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -41485,41 +41575,41 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, null, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_ctx.test.start ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_7, " Sample " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.test.currentCount) + " of " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.test.sampleCount), 1
+          return [_ctx.test.start && _ctx.test.displayMoisture === false ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_7, " Sample " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.test.currentCount) + " of " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.test.sampleCount), 1
           /* TEXT */
           ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TestDashboard, {
             sensorData: _ctx.sensorData
           }, null, 8
           /* PROPS */
-          , ["sensorData"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+          , ["sensorData"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+            onClick: _cache[0] || (_cache[0] = function ($event) {
+              return $options.nextSample();
+            }),
+            "class": "mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded",
+            type: "button"
+          }, " Continue ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
         }),
         _: 1
         /* STABLE */
 
-      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, null, {
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, null, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_ctx.test.start ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, [_this.test.currentCount == _this.test.sampleCount ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-            key: 0,
-            onClick: _cache[0] || (_cache[0] = function ($event) {
+          return [_ctx.test.displayMoisture === true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_this.sensorData.moisture) + "% ", 1
+          /* TEXT */
+          ), _hoisted_13])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+            onClick: _cache[1] || (_cache[1] = function ($event) {
               return $options.processAndSaveData();
             }),
             "class": "mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded",
             type: "button"
-          }, " Finish and continue ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-            key: 1,
-            onClick: _cache[1] || (_cache[1] = function ($event) {
-              return _ctx.nextSample();
-            }),
-            "class": "mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded",
-            type: "button"
-          }, " Save and Continue to next sample "))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+          }, " save and continue ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
         }),
         _: 1
         /* STABLE */
 
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, null, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_ctx.showSampleDatas ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Samples, {
+          return [_ctx.showSampleDatas ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Samples, {
             sampleDatas: $props.prevResults
           }, null, 8
           /* PROPS */
@@ -41674,7 +41764,7 @@ var _hoisted_26 = {
   "class": "font-bold"
 };
 
-var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/kg of nitrogen to get the ideal nutrient value for the soil ");
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/L of nitrogen to get the ideal nutrient value for the soil ");
 
 var _hoisted_28 = {
   style: {
@@ -41755,7 +41845,7 @@ var _hoisted_43 = {
   "class": "font-bold"
 };
 
-var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/kg of nitrogen to get the ideal nutrient value for the soil ");
+var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/L of phosphorus to get the ideal nutrient value for the soil ");
 
 var _hoisted_45 = {
   style: {
@@ -41836,7 +41926,7 @@ var _hoisted_60 = {
   "class": "font-bold"
 };
 
-var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/kg of potassium to get the ideal nutrient value for the soil ");
+var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/L of potassium to get the ideal nutrient value for the soil ");
 
 var _hoisted_62 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
@@ -42194,7 +42284,7 @@ var _hoisted_6 = {
   "class": "max-w-full px-4 py-4 mx-auto"
 };
 var _hoisted_7 = {
-  "class": "sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-4"
+  "class": "sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-3"
 };
 var _hoisted_8 = {
   "class": "flex flex-col justify-center px-4 py-4 bg-white border border-blue-300 border-4 rounded rounded-full"
@@ -42235,19 +42325,6 @@ var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_17 = {
-  "class": "flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-green-300 border-4 rounded sm:mt-0 rounded-full"
-};
-var _hoisted_18 = {
-  "class": "text-3xl font-semibold text-center text-gray-800"
-};
-
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-  "class": "text-lg text-center text-gray-500"
-}, "Moisture Level", -1
-/* HOISTED */
-);
-
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.sensorData.nitrogen), 1
   /* TEXT */
@@ -42255,9 +42332,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), _hoisted_13])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.sensorData.potassium), 1
   /* TEXT */
-  ), _hoisted_16])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.sensorData.moisture) + " % ", 1
-  /* TEXT */
-  ), _hoisted_19])])])])])])])])]);
+  ), _hoisted_16])])])])])])])])]);
 }
 
 /***/ }),

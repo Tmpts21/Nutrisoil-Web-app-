@@ -7,23 +7,35 @@
                         <div class="text-center ">
 
                                 <Transition>
-                                    <div v-if="test.start">
+                                    <div v-if="test.start && test.displayMoisture === false ">
                                             <small class="text-gray-500"> Sample {{test.currentCount}} of {{test.sampleCount}}</small>
                                             <TestDashboard :sensorData="sensorData"></TestDashboard>
-</div>
+                                      <button  @click="nextSample()" class="mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                                                Continue
+                                      </button>
+                                          </div>
                                 </Transition>
                                 <Transition>
 
-                                <div v-if="test.start" class="mb-5">
+                                </Transition>
 
-                                    
-                                     <button v-if="this.test.currentCount == this.test.sampleCount" @click="processAndSaveData()" class="mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"> 
-                                               Finish and continue
-                                     </button>
-                                     <button v-else @click="nextSample()" class="mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
-                                              Save and Continue to next sample
-                                     </button>
-                                </div>
+                                <Transition>
+                                    <div v-if="test.displayMoisture === true">
+                                        <div class="max-w-full px-4 py-4 mx-auto">
+                                            <div class="sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-1">
+                                                <div class="flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-green-300 border-4 rounded sm:mt-0 rounded-full ">
+                                                    <div>
+                                                        <p class="text-3xl font-semibold text-center text-gray-800">{{this.sensorData.moisture }}% </p>
+                                                        <p class="text-lg text-center text-gray-500">Moisture Level</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button @click="processAndSaveData()" class="mr-16 shadow float-right bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"> 
+                                                save and continue
+                                        </button>
+                                  </div>
                                 </Transition>
 
                         
@@ -85,7 +97,9 @@ export default {
         title : "",
         currentCount: 1 ,
         start : true , 
-        npkResults : []
+        npkResults : [],
+        displayMoisture : false , 
+        displayNpk : true
       },
       sensorData : {} 
   }),
@@ -101,11 +115,18 @@ export default {
         //save and process data to the backend 
         processAndSaveData() { 
             Inertia.post('/saveTest', { 
-                samples: [this.sensorData],
+                samples: this.test.npkResults,
                 title : this.test.title,
                 test_id : this.test_id
 
             })
+        },
+                // continue to next sample 
+        nextSample() {
+            this.test.displayNpk = false  
+            this.test.displayMoisture = true 
+            this.saveSensorData() 
+
         },
 
         // get sensor data from firebase. The "data" is the name of the key inside the database 
@@ -113,6 +134,26 @@ export default {
             const db = getDatabase();
             const dataRef = ref(db, 'data');
             onValue(dataRef, (snapshot) => { this.sensorData = snapshot.val() ; });
+        },
+
+        saveSensorData() { 
+            const dbRef = ref(getDatabase());
+            get(child(dbRef, 'data'))
+                .then((snapshot) => {if (snapshot.exists()) {
+                    this.test.npkResults.push(this.sensorData);
+                }
+                    else { console.log("No data available") }
+                }).catch((error) => { console.error(error)  });
+        },
+
+        saveMoistureData() { 
+            const dbRef = ref(getDatabase());
+            get(child(dbRef, 'data'))
+                .then((snapshot) => {if (snapshot.exists()) {
+                    this.test.npkResults[0].moisture = snapshot.val().moisture;
+                }
+                    else { console.log("No data available") }
+                }).catch((error) => { console.error(error)  });
         },
 
   },
