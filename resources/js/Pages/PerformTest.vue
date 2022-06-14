@@ -177,7 +177,8 @@ export default {
         //save and process data to the backend 
         processAndSaveData() { 
             // instead calling @saveSensorData manually add the last item to the array. IDK if I use the @saveSensordata function it is always offset by one. IDK if this is a bug in inertia or in my code             
-            this.saveMoistureData()
+            const data = this.getSensorData() ;
+            this.test.sampleNutrients[0].moisture = data.moisture ; 
             Inertia.post('/saveTest', { 
                 samples: this.test.sampleNutrients,
                 title : this.test.title
@@ -189,6 +190,7 @@ export default {
             const db = getDatabase();
             const dataRef = ref(db, 'data');
             onValue(dataRef, (snapshot) => { this.sensorData = snapshot.val() });
+            return this.sensorData ;
         },
 
         // Save sensor data in local storage and variable "test.sampleNutrients"
@@ -206,10 +208,15 @@ export default {
             const dbRef = ref(getDatabase());
             get(child(dbRef, 'data'))
                 .then((snapshot) => {if (snapshot.exists()) {
+                    console.log(this.test.sampleNutrients)
                     this.test.sampleNutrients[0].moisture = snapshot.val().moisture;
+                    console.log(this.test.sampleNutrients)
+
                 }
                     else { console.log("No data available") }
                 }).catch((error) => { console.error(error)  });
+
+            return this.test.sampleNutrients
         },
     
   },

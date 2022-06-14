@@ -38784,7 +38784,8 @@ var app = (0,firebase_app__WEBPACK_IMPORTED_MODULE_1__.initializeApp)(firebaseCo
     //save and process data to the backend 
     processAndSaveData: function processAndSaveData() {
       // instead calling @saveSensorData manually add the last item to the array. IDK if I use the @saveSensordata function it is always offset by one. IDK if this is a bug in inertia or in my code             
-      this.saveMoistureData();
+      var data = this.getSensorData();
+      this.test.sampleNutrients[0].moisture = data.moisture;
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__.Inertia.post('/saveTest', {
         samples: this.test.sampleNutrients,
         title: this.test.title
@@ -38799,6 +38800,7 @@ var app = (0,firebase_app__WEBPACK_IMPORTED_MODULE_1__.initializeApp)(firebaseCo
       (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.onValue)(dataRef, function (snapshot) {
         _this.sensorData = snapshot.val();
       });
+      return this.sensorData;
     },
     // Save sensor data in local storage and variable "test.sampleNutrients"
     saveSensorData: function saveSensorData() {
@@ -38821,13 +38823,16 @@ var app = (0,firebase_app__WEBPACK_IMPORTED_MODULE_1__.initializeApp)(firebaseCo
       var dbRef = (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.ref)((0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.getDatabase)());
       (0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.get)((0,firebase_database__WEBPACK_IMPORTED_MODULE_2__.child)(dbRef, 'data')).then(function (snapshot) {
         if (snapshot.exists()) {
+          console.log(_this3.test.sampleNutrients);
           _this3.test.sampleNutrients[0].moisture = snapshot.val().moisture;
+          console.log(_this3.test.sampleNutrients);
         } else {
           console.log("No data available");
         }
       })["catch"](function (error) {
         console.error(error);
       });
+      return this.test.sampleNutrients;
     }
   }
 });
