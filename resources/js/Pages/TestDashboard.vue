@@ -11,21 +11,21 @@
                                     <div class="sm:grid sm:h-32 sm:grid-flow-row sm:gap-4 sm:grid-cols-3">
                                         <div class="flex flex-col justify-center px-4 py-4 bg-white border border-blue-300 border-4 rounded rounded-full">
                                             <div>
-                                                <p class="text-3xl font-semibold text-center text-gray-800">{{sensorData.nitrogen}}</p>
+                                                <p class="text-3xl font-semibold text-center text-gray-800">{{sensorData.nitrogen / 2 }}</p>
                                                 <p class="text-lg text-center text-gray-500">Nitrogen(N)</p>
                                             </div>
                                         </div>
                             
                                         <div class="flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-orange-300 border-4 rounded sm:mt-0 rounded-full ">
                                             <div>
-                                                <p class="text-3xl font-semibold text-center text-gray-800">{{sensorData.phosphorus}}</p>
+                                                <p class="text-3xl font-semibold text-center text-gray-800">{{sensorData.phosphorus / 2 }}</p>
                                                 <p class="text-lg text-center text-gray-500">Phosporus(P) </p>
                                             </div>
                                         </div>
 
                                         <div class="flex flex-col justify-center px-4 py-4 mt-4 bg-white border border-gray-300 border-4 rounded sm:mt-0 rounded-full ">
                                             <div>
-                                                <p class="text-3xl font-semibold text-center text-gray-800">{{sensorData.potassium}} </p>
+                                                <p class="text-3xl font-semibold text-center text-gray-800">{{sensorData.potassium / 2 }} </p>
                                                 <p class="text-lg text-center text-gray-500">Potassium(K)</p>
                                             </div>
                                         </div>

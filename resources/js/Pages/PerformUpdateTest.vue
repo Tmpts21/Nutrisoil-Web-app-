@@ -114,6 +114,9 @@ export default {
         
         //save and process data to the backend 
         processAndSaveData() { 
+            const data = this.getSensorData() ;
+            this.test.npkResults[0].moisture = data.moisture ; 
+
             Inertia.post('/saveTest', { 
                 samples: this.test.npkResults,
                 title : this.test.title,
@@ -134,6 +137,7 @@ export default {
             const db = getDatabase();
             const dataRef = ref(db, 'data');
             onValue(dataRef, (snapshot) => { this.sensorData = snapshot.val() ; });
+            return this.sensorData; 
         },
 
         saveSensorData() { 

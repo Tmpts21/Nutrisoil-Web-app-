@@ -34,20 +34,20 @@ class TestController extends Controller
             foreach($request->samples as $sample) { 
                  Content::create([
                     'test_id' => $test-> id , 
-                    'nitrogen' => $sample['nitrogen'] ,
-                    'phosporus' => $sample['phosphorus'] ,
-                    'potassium' => $sample['potassium'] ,
-                    'moist_level' => $sample['moisture'] ,
+                    'nitrogen' => $sample['nitrogen'] / 2 ,
+                    'phosporus' => $sample['phosphorus'] / 2,
+                    'potassium' => $sample['potassium'] / 2 ,
+                    'moist_level' => $sample['moisture'] / 2 ,
                 ]);
             }
         }
         else { 
             Content::create([
                 'test_id' => $request->test_id , 
-                'nitrogen' => $request->samples[0]['nitrogen'] ,
-                'phosporus' => $request->samples[0]['phosphorus'] ,
-                'potassium' => $request->samples[0]['potassium'] ,
-                'moist_level' => $request->samples[0]['moisture'] ,
+                'nitrogen' => $request->samples[0]['nitrogen'] / 2  ,
+                'phosporus' => $request->samples[0]['phosphorus'] / 2 ,
+                'potassium' => $request->samples[0]['potassium']  / 2,
+                'moist_level' => $request->samples[0]['moisture'] / 2 ,
             ]);
             
         }
