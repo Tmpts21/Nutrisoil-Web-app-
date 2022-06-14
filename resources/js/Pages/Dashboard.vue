@@ -113,7 +113,7 @@ export default {
 
                         <div v-else class="ml-8 text-center ">
                            <li>
-                               <small class="font-bold"> (No Tasks for today) </small>
+                               <small class="font-bold"> (Not available) </small>
                            </li>      
                         </div>
 
@@ -176,7 +176,7 @@ export default {
 
                         <div v-else class="ml-8 text-center">
                             <li>
-                                 <small class="font-bold"> (no pending tasks) </small>     
+                                 <small class="font-bold"> (Not available) </small>     
                             </li>
                         </div>
 

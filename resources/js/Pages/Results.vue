@@ -57,7 +57,7 @@
 
                                     <small v-if="summary.nitrogen > 0 && result['nitrogen'].assesment != 'HIGH'" style="font-size:14px" >
                                         <li class="ml-5">
-                                            You need to add atleast <span class="font-bold">{{summary.nitrogen}}</span> ppm / mg/L of nitrogen to get the ideal nutrient value for the soil
+                                            You need to add atleast <span class="font-bold">{{summary.nitrogen}}</span> ppm / mg/Kg of nitrogen to get the ideal nutrient value for the soil
                                         </li>
                                     </small>
                                 </small>
@@ -88,7 +88,7 @@
 
                                     <small v-if="summary.phosporus > 0 && result['phosporus'].assesment != 'HIGH'" style="font-size:14px" >
                                         <li class="ml-5">
-                                            You need to add atleast <span class="font-bold">{{summary.phosporus}}</span> ppm / mg/L of phosphorus to get the ideal nutrient value for the soil
+                                            You need to add atleast <span class="font-bold">{{summary.phosporus}}</span> ppm / mg/Kg of phosphorus to get the ideal nutrient value for the soil
                                         </li>
                                     </small>
                                 </small>
@@ -115,7 +115,7 @@
 
                                     <small v-if="summary.potassium > 0 && result['potassium'].assesment != 'HIGH'" style="font-size:14px" >
                                         <li class="ml-5">
-                                            You need to add atleast <span class="font-bold">{{summary.potassium}}</span> ppm / mg/L of potassium to get the ideal nutrient value for the soil
+                                            You need to add atleast <span class="font-bold">{{summary.potassium}}</span> ppm / mg/Kg of potassium to get the ideal nutrient value for the soil
                                         </li>
                                     </small>
                                 </small>
@@ -224,8 +224,8 @@ export default {
             labels: [ 'Nitrogen', 'Phosporus', 'Potassium'],
             datasets: [
                 {
-                    label: 'mg/L',
-                    backgroundColor: [ '#03fce8' , '#b5b0aa' , '#ed9734'],
+                    label: 'mg/Kg',
+                    backgroundColor: [ '#eb15e3' , '#6579db' , '#ed9734'],
                     data : values
                 }
             ]

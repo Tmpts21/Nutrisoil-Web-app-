@@ -39007,8 +39007,8 @@ __webpack_require__.r(__webpack_exports__);
       var chartData = {
         labels: ['Nitrogen', 'Phosporus', 'Potassium'],
         datasets: [{
-          label: 'mg/L',
-          backgroundColor: ['#03fce8', '#b5b0aa', '#ed9734'],
+          label: 'mg/Kg',
+          backgroundColor: ['#eb15e3', '#6579db', '#ed9734'],
           data: values
         }]
       };
@@ -40798,7 +40798,7 @@ var _hoisted_23 = {
 
 var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
   "class": "font-bold"
-}, " (No Tasks for today) ")], -1
+}, " (Not available) ")], -1
 /* HOISTED */
 );
 
@@ -40878,7 +40878,7 @@ var _hoisted_41 = {
 
 var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
   "class": "font-bold"
-}, " (no pending tasks) ")], -1
+}, " (Not available) ")], -1
 /* HOISTED */
 );
 
@@ -41772,7 +41772,7 @@ var _hoisted_26 = {
   "class": "font-bold"
 };
 
-var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/L of nitrogen to get the ideal nutrient value for the soil ");
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/Kg of nitrogen to get the ideal nutrient value for the soil ");
 
 var _hoisted_28 = {
   style: {
@@ -41853,7 +41853,7 @@ var _hoisted_43 = {
   "class": "font-bold"
 };
 
-var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/L of phosphorus to get the ideal nutrient value for the soil ");
+var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/Kg of phosphorus to get the ideal nutrient value for the soil ");
 
 var _hoisted_45 = {
   style: {
@@ -41934,7 +41934,7 @@ var _hoisted_60 = {
   "class": "font-bold"
 };
 
-var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/L of potassium to get the ideal nutrient value for the soil ");
+var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ppm / mg/Kg of potassium to get the ideal nutrient value for the soil ");
 
 var _hoisted_62 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
@@ -42608,15 +42608,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.fieldName), 1
       /* TEXT */
       )]), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
-        chartData: _this.getChartData($props.n, $props.dates, 'nitrogen (mg/L)', '#93C5FD')
+        chartData: _this.getChartData($props.n, $props.dates, 'nitrogen (mg/Kg)', '#93C5FD')
       }, null, 8
       /* PROPS */
       , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
-        chartData: _this.getChartData($props.p, $props.dates, 'phosphorus (mg/L)', '#FDBA74')
+        chartData: _this.getChartData($props.p, $props.dates, 'phosphorus (mg/Kg)', '#FDBA74')
       }, null, 8
       /* PROPS */
       , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
-        chartData: _this.getChartData($props.k, $props.dates, 'potassium (mg/L) ', '#D1D5DB')
+        chartData: _this.getChartData($props.k, $props.dates, 'potassium (mg/Kg) ', '#D1D5DB')
       }, null, 8
       /* PROPS */
       , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
