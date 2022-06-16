@@ -34,9 +34,9 @@ class TestController extends Controller
             foreach($request->samples as $sample) { 
                  Content::create([
                     'test_id' => $test-> id , 
-                    'nitrogen' => $sample['nitrogen'] / 2 ,
+                    'nitrogen' =>  $sample['potassium'] / 2 ,
                     'phosporus' => $sample['phosphorus'] / 2,
-                    'potassium' => $sample['potassium'] / 2 ,
+                    'potassium' =>  $sample['nitrogen'] / 2,
                     'moist_level' => $sample['moisture'] / 2 ,
                 ]);
             }
@@ -44,9 +44,9 @@ class TestController extends Controller
         else { 
             Content::create([
                 'test_id' => $request->test_id , 
-                'nitrogen' => $request->samples[0]['nitrogen'] / 2  ,
+                'nitrogen' =>  $request->samples[0]['potassium']  / 2,
                 'phosporus' => $request->samples[0]['phosphorus'] / 2 ,
-                'potassium' => $request->samples[0]['potassium']  / 2,
+                'potassium' => $request->samples[0]['nitrogen'] / 2 ,
                 'moist_level' => $request->samples[0]['moisture'] / 2 ,
             ]);
             

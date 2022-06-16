@@ -18,7 +18,7 @@
                                                         Phosporus
                                                     </th>
                                                     <th scope="col" class="px-6 py-3">
-                                                        Photassium
+                                                        Potassium
                                                     </th>
                                                     <th scope="col" class="px-6 py-3">
                                                         Moisture Level
@@ -30,13 +30,13 @@
                                             <tbody>
                                                 <tr v-for="(sample , index) in sampleDatas" :key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center">
                                                     <td class="px-6 py-4">
-                                                        {{sample.nitrogen}}mg/L
+                                                        {{sample.potassium }} mg/Kg
                                                     </td>
                                                     <td class="px-6 py-4">
-                                                        {{sample.phosporus}} mg/L
+                                                        {{sample.phosporus }} mg/Kg
                                                     </td>
                                                     <td class="px-6 py-4">
-                                                        {{sample.potassium}} mg/L
+                                                        {{sample.nitrogen }}mg/Kg
                                                     </td>
                                                     <td class="px-6 py-4">
                                                         {{sample.moist_level}} %

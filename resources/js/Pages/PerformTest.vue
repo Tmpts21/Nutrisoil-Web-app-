@@ -178,13 +178,15 @@ export default {
         processAndSaveData() { 
             // instead calling @saveSensorData manually add the last item to the array. IDK if I use the @saveSensordata function it is always offset by one. IDK if this is a bug in inertia or in my code             
             const data = this.getSensorData() ;
-            this.test.sampleNutrients[0].moisture = data.moisture ; 
+            this.test.sampleNutrients[0].moisture = data.moisture ;
+            this.test.sampleNutrients[0].nitrogen = data.potassium ; 
+            this.test.sampleNutrients[0].potassium = data.nitrogen ;
             Inertia.post('/saveTest', { 
                 samples: this.test.sampleNutrients,
                 title : this.test.title
             })
         },
-
+    
         // get sensor data from firebase. The "Data" is the name of the key inside the database 
         getSensorData() { 
             const db = getDatabase();

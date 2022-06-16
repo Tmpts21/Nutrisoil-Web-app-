@@ -115,8 +115,10 @@ export default {
         //save and process data to the backend 
         processAndSaveData() { 
             const data = this.getSensorData() ;
-            this.test.npkResults[0].moisture = data.moisture ; 
-
+            this.test.npkResults[0].moisture = data.moisture ;
+            this.test.npkResults[0].nitrogen = data.potassium ; 
+            this.test.npkResults[0].potassium = data.nitrogen ;
+            
             Inertia.post('/saveTest', { 
                 samples: this.test.npkResults,
                 title : this.test.title,
